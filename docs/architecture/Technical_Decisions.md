@@ -753,12 +753,10 @@ Le dépôt GitHub est utilisé comme dépôt distant officiel du projet.
 
 ### État actuel
 
-Le dépôt contient actuellement :
+Le dépôt contient actuellement les branches principales suivantes :
 
-```text
 main
 member1
-```
 
 La branche `main` est synchronisée avec le dépôt GitHub et la branche `member1` est également publiée sur le dépôt distant.
 
