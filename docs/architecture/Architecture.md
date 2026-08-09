@@ -182,6 +182,26 @@ Le service construit ensuite un rapport qualité destiné au pipeline de traitem
 
 Le module travaille directement avec le chemin physique du fichier (`Path`), fourni par le ProcessService.
 
+---
+
+## Environnement d'exécution
+
+Le Backend de TranscriBITE utilise Python 3.12 comme version de référence.
+
+L'environnement virtuel du Backend est situé dans :
+
+```text
+backend/.venv
+```
+
+### `.venv`
+
+Environnement virtuel Python utilisé par le Backend.
+
+Il contient les dépendances nécessaires au fonctionnement de l'application et doit rester séparé de l'installation Python globale.
+
+Le dossier `.venv` n'est pas destiné à être versionné dans Git.
+
 
 
 ## 5. Architecture Frontend
@@ -281,7 +301,7 @@ Le Backend est responsable de :
 
 Architecture de communication :
 
-```
+```text
 Utilisateur
      |
      v
@@ -309,7 +329,7 @@ Les routers ne contiennent pas la logique métier. Ils délèguent les traitemen
 
 Exemple :
 
-```
+```text
 Upload Router
       |
       v
@@ -321,7 +341,7 @@ Storage
 
 Pour le traitement principal :
 
-```
+```text
 Process Router
       |
       v
@@ -344,7 +364,7 @@ Le module Process agit comme orchestrateur principal. Il contrôle l'ordre d'ex�
 
 Le déroulement global est :
 
-```
+```text
 Upload
   |
 Validation

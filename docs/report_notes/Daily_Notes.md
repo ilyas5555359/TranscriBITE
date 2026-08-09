@@ -678,13 +678,15 @@ Les livrables du Jour 10 sont validés :
 
 Le Jour 11 est consacré à la documentation technique complète et à la synchronisation des documents du projet.
 
-# Jour 11
+---
 
-## Documentation technique
+# Jour 11 — Documentation technique
 
-Cette journée a été consacrée à la consolidation de toute la documentation technique du projet TranscriBITE.
+## Objectif de la journée
 
-L'objectif principal était de synchroniser la documentation avec l'architecture et les développements réalisés jusqu'au Jour 9.
+Cette journée a été consacrée à la consolidation de toute la documentation technique du projet TranscriBITE. L'objectif principal de cette journée était de mettre à jour et d'unifier l'ensemble de la documentation technique de TranscriBITE après les travaux réalisés durant les neuf premières journées de développement et la préparation de l'environnement IA du Jour 10.
+
+L'objectif était également de garantir que la documentation corresponde à l'architecture et aux décisions réellement retenues dans le projet.
 
 Les travaux effectués comprennent :
 
@@ -702,13 +704,130 @@ Les travaux effectués comprennent :
 - création du guide d'installation
 - vérification de la cohérence entre le code et la documentation
 
-Cette journée a permis d'obtenir une documentation homogène, structurée et prête à accompagner les prochaines phases de développement.
+---
+
+## Travaux réalisés
+
+### Mise à jour de la documentation d'architecture
+
+Mise à jour des documents relatifs à l'architecture du projet :
+
+- `Architecture.md`
+- `Folder_Structure.md`
+- `Workflow_Processing.md`
+- `Technical_Decisions.md`
+
+Les documents ont été synchronisés avec l'architecture Backend réellement développée.
 
 ---
 
-# Prochaines mises à jour
+### Mise à jour de la documentation API
 
-À chaque fin de module :
+Vérification et mise à jour de :
+
+- `API_Contract.md`
+
+Les différentes interfaces du Backend ont été vérifiées afin de maintenir une cohérence entre les routes prévues, leur responsabilité et l'architecture des modules.
+
+---
+
+### Mise à jour de la documentation du rapport
+
+Mise à jour des documents :
+
+- `Daily_Notes.md`
+- `Problems_and_Solutions.md`
+- `Technical_Choices.md`
+- `Future_Improvements.md`
+- `Performance_Comparison.md`
+
+Les décisions et problèmes rencontrés durant le développement ont été conservés dans les documents correspondants.
+
+---
+
+### Mise à jour de la documentation des tests
+
+Vérification et organisation de :
+
+- `Test_Plan.md`
+- `Test_Cases.md`
+- `Test_Results.md`
+
+Les tests prévus ont été alignés avec les modules développés.
+
+La validation complète des fonctionnalités reste prévue dans la phase officielle de tests.
+
+---
+
+### Mise à jour du Changelog
+
+Le `CHANGELOG.md` a été vérifié afin de conserver une trace chronologique des fonctionnalités, modules et modifications réalisées pendant le développement.
+
+---
+
+### Mise à jour du guide d'installation
+
+Le `Installation_Guide.md` a été synchronisé avec l'environnement préparé durant le Jour 10, notamment :
+
+- Python 3.12
+- environnement virtuel
+- dépendances
+- FFmpeg
+- Ollama
+- configuration du Backend
+
+---
+
+## Difficultés rencontrées
+
+La principale difficulté concernait la synchronisation de plusieurs documents décrivant les mêmes composants du projet.
+
+Une modification de l'architecture peut en effet nécessiter des ajustements dans plusieurs documents tels que l'architecture, le workflow, le contrat API, les choix techniques et les tests.
+
+Une attention particulière a donc été portée à la cohérence entre les différents documents.
+
+---
+
+## Décisions techniques
+
+Les décisions suivantes ont été maintenues :
+
+- conserver une documentation séparée par domaine
+- conserver une documentation chronologique dans `Daily_Notes.md`
+- conserver les décisions techniques dans `Technical_Decisions.md`
+- conserver les choix pratiques dans `Technical_Choices.md`
+- conserver le contrat des API dans `API_Contract.md`
+- conserver les scénarios de test dans `Test_Plan.md` et `Test_Cases.md`
+- conserver les problèmes et leurs solutions dans `Problems_and_Solutions.md`
+
+La documentation doit rester synchronisée avec le code réel et ne doit pas présenter comme implémentées des fonctionnalités uniquement prévues.
+
+---
+
+## Résultat obtenu
+
+À la fin de cette journée, la documentation technique de TranscriBITE est organisée et synchronisée avec l'état actuel du projet.
+
+Cette journée a permis d'obtenir une documentation homogène, structurée et prête à accompagner les prochaines phases de développement.
+
+Les documents d'architecture, d'API, de tests, de rapport, d'installation et de suivi du développement constituent désormais une base documentaire cohérente pour la suite du projet.
+
+---
+
+## Prochaines mises à jour
+
+La prochaine étape du planning sera consacrée à :
+
+- Git
+- GitHub
+- création du repository
+- configuration du dépôt
+- premiers commits
+- organisation des branches
+- workflow collaboratif
+- Pull Requests
+
+et à la chaque fin de module :
 
 * ajouter les tâches réalisées
 * ajouter les décisions prises

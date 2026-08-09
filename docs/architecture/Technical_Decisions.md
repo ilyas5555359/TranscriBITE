@@ -14,7 +14,7 @@ Chaque décision est accompagnée de sa justification afin de garder une trace c
 
 Adoption d'une architecture séparée en trois grandes parties :
 
-```text id="9l3q5d"
+```text
 Frontend
 
 ↓
@@ -138,7 +138,7 @@ FFmpeg permet :
 
 Pipeline :
 
-```text id="w9k4gq"
+```text
 Vidéo
 
 ↓
@@ -180,7 +180,7 @@ Cette fonctionnalité reste optionnelle selon les performances disponibles.
 
 Organisation du Backend selon une architecture modulaire :
 
-```text id="u9d0cl"
+```text
 routers
 
 services
@@ -245,7 +245,7 @@ Utilisation d'Enum pour représenter les étapes et états du traitement.
 
 Fichiers créés :
 
-```text id="j2pw8n"
+```text
 backend/app/enums/
 
 pipeline_step.py
@@ -272,7 +272,7 @@ Les Enum permettent :
 
 Le traitement suit un pipeline composé des étapes suivantes :
 
-```text id="r9y7qz"
+```text
 Upload
 
 ↓
@@ -439,8 +439,7 @@ Les prochaines décisions seront ajoutées concernant :
 * stratégie de tests
 * déploiement final
 
-```
-```
+---
 
 ### 14. Architecture du module Process
 

@@ -30,7 +30,7 @@ Absence d'une structure technique détaillée avant le développement.
 
 Création d'une architecture modulaire séparant :
 
-```text id="t3d4mm"
+```text
 backend
 
 frontend
@@ -48,7 +48,7 @@ tests
 
 Puis séparation du Backend en modules :
 
-```text id="2k7u7x"
+```text
 routers
 
 services
@@ -145,7 +145,7 @@ Absence d'une gestion centralisée des états.
 
 Création d'un système basé sur des Enum :
 
-```text id="c6c1p4"
+```text
 backend/app/enums/
 
 pipeline_step.py
@@ -157,7 +157,7 @@ pipeline_order.py
 
 Les étapes officielles sont :
 
-```text id="o6l0m5"
+```text
 Upload
 
 Validation
@@ -183,7 +183,7 @@ Terminé
 
 Les statuts possibles :
 
-```text id="1e2n5f"
+```text
 En attente
 
 En cours
@@ -428,9 +428,7 @@ Les prochains problèmes possibles seront documentés pendant :
 * tests complets
 * performances
 
-```
-```
-
+---
 
 # 10. Préparation de l'environnement IA
 
@@ -579,3 +577,27 @@ Puis les routes `/` et `/docs` ont été testées.
 ### Résultat
 
 Le démarrage de FastAPI et les réponses HTTP `200 OK` ont été validés.
+
+---
+
+# Jour 11 — Documentation technique
+
+## Synchronisation des documents
+
+### Problème
+
+Plusieurs documents décrivaient les mêmes composants du projet sous des angles différents.
+
+### Solution
+
+Une vérification croisée de la documentation a été réalisée afin d'assurer la cohérence entre :
+
+- architecture
+- workflow
+- API
+- choix techniques
+- tests
+- installation
+- changelog
+
+Les documents ont été mis à jour sans modifier les décisions déjà validées.

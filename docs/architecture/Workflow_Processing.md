@@ -14,7 +14,7 @@ Le pipeline est conçu pour être modulaire afin de permettre l'intégration pro
 
 Le traitement complet suit l'ordre suivant :
 
-```text id="7n5d2a"
+```text
 Upload
 
 ↓
@@ -56,7 +56,7 @@ Terminé
 
 En cas d'erreur :
 
-```text id="m7f9c2"
+```text
 Une étape échoue
 
 ↓
@@ -87,7 +87,7 @@ Ces contrôles sont réalisés par le module Health afin de s'assurer que le sys
 
 Les étapes sont définies dans :
 
-```text id="p4s7de"
+```text
 backend/app/enums/pipeline_step.py
 ```
 
@@ -95,7 +95,7 @@ Elles représentent les différentes phases du traitement.
 
 Les valeurs officielles sont :
 
-```text id="q0s2yc"
+```text
 UPLOAD
 
 VALIDATION
@@ -139,13 +139,13 @@ backend/app/enums/
 
 Les états d'exécution sont définis dans :
 
-```text id="z5m8kp"
+```text
 backend/app/enums/step_status.py
 ```
 
 Valeurs utilisées :
 
-```text id="5y4x0a"
+```text
 PENDING
 
 RUNNING
@@ -200,7 +200,7 @@ Chaque étape individuelle est représentée par `ProcessingStep`.
 
 L'ordre officiel est défini dans :
 
-```text id="7m9k1r"
+```text
 backend/app/enums/pipeline_order.py
 ```
 
@@ -232,7 +232,7 @@ Actions :
 
 Module associé :
 
-```text id="v5c2bn"
+```text
 routers/upload.py
 
 services/file_service.py
@@ -255,7 +255,7 @@ Vérifications :
 
 Module associé :
 
-```text id="8d2k0m"
+```text
 utils/validators.py
 ```
 
@@ -296,7 +296,7 @@ Informations possibles :
 
 Module associé :
 
-```text id="9s6x1q"
+```text
 services/quality_service.py
 ```
 
@@ -346,13 +346,13 @@ Extraire la piste audio depuis une vidéo.
 
 Technologie utilisée :
 
-```text id="4c8x9m"
+```text
 FFmpeg
 ```
 
 Flux :
 
-```text id="6h3k0q"
+```text
 Vidéo
 
 ↓
@@ -366,7 +366,7 @@ Audio
 
 Module associé :
 
-```text id="m2k8pl"
+```text
 services/audio_service.py
 ```
 
@@ -380,7 +380,7 @@ Transformer l'audio en texte.
 
 Technologie :
 
-```text id="s8q4wm"
+```text
 Faster-Whisper
 ```
 
@@ -390,7 +390,7 @@ Membre 2
 
 Module associé :
 
-```text id="x3p7bv"
+```text
 services/transcription_service.py
 ```
 
@@ -404,7 +404,7 @@ Créer un résumé à partir de la transcription.
 
 Technologie :
 
-```text id="w1k5mz"
+```text
 Ollama
 ```
 
@@ -414,7 +414,7 @@ Membre 2
 
 Module associé :
 
-```text id="f6r9qx"
+```text
 services/summary_service.py
 ```
 
@@ -485,7 +485,7 @@ Erreur :
 
 En cas d'erreur :
 
-```text id="q8n2vx"
+```text
 Etape actuelle
 
 ↓
@@ -509,7 +509,7 @@ Le Process Service joue le rôle d'orchestrateur.
 
 Flux :
 
-```text id="h5k7qz"
+```text
 Health Service
 
 ↓

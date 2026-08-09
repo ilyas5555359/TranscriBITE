@@ -19,7 +19,7 @@ Le workflow respecte l'architecture définie :
 
 Le fonctionnement global de TranscriBITE suit le flux suivant :
 
-```text id="g7x0f1"
+```text
 Utilisateur
 
 ↓
@@ -81,7 +81,7 @@ Le Frontend React est responsable de :
 
 Structure principale :
 
-```text id="4yq6fw"
+```text
 frontend/src/
 
 components/
@@ -99,7 +99,7 @@ La communication entre React et FastAPI se fait via des API.
 
 Flux :
 
-```text id="7pr6pz"
+```text
 React
 
 ↓
@@ -139,7 +139,7 @@ Le Backend FastAPI représente le centre de contrôle de l'application.
 
 Il contient :
 
-```text id="v2m8z4"
+```text
 routers
 
 services
@@ -159,7 +159,7 @@ Les routers exposent les fonctionnalités de l'application.
 
 Exemples :
 
-```text id="8zqk91"
+```text
 upload.py
 
 process.py
@@ -185,7 +185,7 @@ Les services contiennent la logique métier.
 
 Exemples :
 
-```text id="3q5p0d"
+```text
 file_service.py
 
 audio_service.py
@@ -217,7 +217,7 @@ Après l'upload, le fichier entre dans le pipeline principal.
 
 Le pipeline complet est :
 
-```text id="c3g1f9"
+```text
 Upload
 
 ↓
@@ -271,7 +271,7 @@ ou
 
 Chaque étape possède un état :
 
-```text id="5h6n9a"
+```text
 En attente
 
 En cours
@@ -334,7 +334,7 @@ Selon le type du fichier :
 
 Flux :
 
-```text id="0j2x7k"
+```text
 Audio
 
 ↓
@@ -364,7 +364,7 @@ Résultat
 
 Flux :
 
-```text id="r4w6ks"
+```text
 Vidéo
 
 ↓
@@ -478,7 +478,7 @@ Exemples :
 
 En cas d'erreur :
 
-```text id="x8kq2m"
+```text
 Étape en cours
 
 ↓
@@ -536,9 +536,6 @@ Le workflow sera complété avec :
 * tests complets
 * génération PDF
 * déploiement final
-
-```
-```
 
 ---
 

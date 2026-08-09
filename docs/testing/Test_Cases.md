@@ -406,6 +406,92 @@ Toutes les informations sont présentes.
 
 ---
 
+## Tests de l'environnement
+
+### TC-ENV-01 — Version Python
+
+**Objectif :**
+
+Vérifier que le projet utilise Python 3.12.
+
+**Résultat attendu :**
+
+Python 3.12.x est utilisé.
+
+---
+
+### TC-ENV-02 — Environnement virtuel
+
+**Objectif :**
+
+Vérifier que le Backend utilise l'environnement virtuel du projet.
+
+**Résultat attendu :**
+
+`backend/.venv` est correctement utilisé.
+
+---
+
+### TC-ENV-03 — Dépendances
+
+**Objectif :**
+
+Vérifier que les dépendances nécessaires sont disponibles.
+
+**Résultat attendu :**
+
+Les dépendances définies dans `requirements.txt` sont installées.
+
+---
+
+### TC-ENV-04 — FFmpeg
+
+**Objectif :**
+
+Vérifier la disponibilité de FFmpeg.
+
+**Résultat attendu :**
+
+FFmpeg peut être exécuté correctement.
+
+---
+
+### TC-ENV-05 — Faster-Whisper
+
+**Objectif :**
+
+Vérifier l'installation de Faster-Whisper.
+
+**Résultat attendu :**
+
+Le package peut être importé correctement.
+
+---
+
+### TC-ENV-06 — Ollama
+
+**Objectif :**
+
+Vérifier la disponibilité d'Ollama.
+
+**Résultat attendu :**
+
+Ollama est accessible localement.
+
+---
+
+### TC-ENV-07 — Backend
+
+**Objectif :**
+
+Vérifier le lancement du Backend avec Python 3.12.
+
+**Résultat attendu :**
+
+Le Backend démarre correctement et les endpoints principaux sont accessibles.
+
+---
+
 # Tests d'intégration
 
 ## TC-IT-01

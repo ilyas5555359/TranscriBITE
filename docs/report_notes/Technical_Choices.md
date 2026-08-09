@@ -259,6 +259,7 @@ Placer `check_file_exists()` dans FileService.
 
 Toutes les opérations liées aux fichiers sont regroupées dans un seul service, ce qui améliore la réutilisabilité et limite la duplication de code.
 
+---
 
 # Jour 10
 
@@ -311,3 +312,29 @@ Les deux membres doivent utiliser Python 3.12 et un environnement de dépendance
 ### Justification
 
 Cette règle limite les différences d'environnement et réduit les problèmes lors de l'intégration du travail IA du Membre 2.
+
+---
+
+# Jour 11
+
+## Organisation de la documentation
+
+### Choix
+
+Conserver une documentation séparée selon les domaines du projet.
+
+### Justification
+
+Cette organisation facilite la maintenance et permet de retrouver rapidement les informations relatives à l'architecture, aux API, aux tests, à l'installation et au suivi du développement.
+
+---
+
+## Synchronisation avec le code
+
+### Choix
+
+Maintenir la documentation en cohérence avec l'état réel du code.
+
+### Justification
+
+La documentation doit refléter les fonctionnalités réellement développées et distinguer clairement les fonctionnalités implémentées des fonctionnalités encore prévues.

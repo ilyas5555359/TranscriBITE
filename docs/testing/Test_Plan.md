@@ -95,6 +95,19 @@ Ces tests permettront de vérifier :
 - les paramètres utilisateur
 - les erreurs de validation
 
+### Validation de l'environnement
+
+Les tests de l'environnement permettent de vérifier :
+
+- la version Python utilisée
+- l'utilisation de l'environnement virtuel
+- la disponibilité des dépendances
+- la disponibilité de FFmpeg
+- la disponibilité de Torch
+- la disponibilité de Faster-Whisper
+- la disponibilité d'Ollama
+- le lancement du Backend
+
 ---
 
 ## Tests de performance

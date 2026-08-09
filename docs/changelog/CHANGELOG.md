@@ -142,17 +142,28 @@ Il permet de suivre l'évolution du projet depuis le début du développement ju
 
 ### Documentation technique
 
+- Vérification de la documentation d'architecture
 - Mise à jour de l'architecture générale
 - Mise à jour du Workflow global
 - Mise à jour de la documentation API
 - Mise à jour des choix techniques
 - Mise à jour des problèmes et solutions
 - Mise à jour des améliorations futures
+- Mise à jour de `Architecture.md`
+- Mise à jour de `Folder_Structure.md`
+- Vérification de `Workflow_Processing.md`
+- Mise à jour de `Technical_Decisions.md`
+- Vérification de `API_Contract.md`
+- Mise à jour de `Daily_Notes.md`
+- Mise à jour de `Problems_and_Solutions.md`
+- Vérification de `Technical_Choices.md`
+- Vérification de la documentation des tests
 - Rédaction du Test Plan
 - Rédaction des Test Cases
 - Préparation du Test Results
 - Création du README principal
 - Création du guide d'installation
+- Vérification du Changelog
 - Harmonisation de l'ensemble de la documentation
 
 ---

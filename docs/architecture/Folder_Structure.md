@@ -121,12 +121,22 @@ backend/
 
 ├── app/
 
+├── .venv/
+
 ├── .env
 
 ├── .env.example
 
 └── requirements.txt
 ```
+
+### `.venv`
+
+Environnement virtuel Python utilisé par le Backend.
+
+Il contient les dépendances Python nécessaires au projet.
+
+Le dossier `.venv` est un environnement local et ne doit pas être versionné dans Git.
 
 ---
 
@@ -1236,7 +1246,7 @@ Les tests permettent de vérifier :
 
 Structure :
 
-```text id="4v8f6b"
+```text
 tests/
 
 ├── backend/
@@ -1266,7 +1276,7 @@ Le dossier `backend` contient les tests liés à l'API FastAPI et aux services B
 
 Structure :
 
-```text id="3pv7yq"
+```text
 backend/
 
 ├── test_upload.py
@@ -1293,7 +1303,7 @@ Il permet de tester :
 
 Module associé :
 
-```text id="p5b2sf"
+```text
 routers/upload.py
 
 services/file_service.py
@@ -1314,7 +1324,7 @@ Il permet de tester :
 
 Modules associés :
 
-```text id="r2m1xv"
+```text
 utils/validators.py
 
 upload_schema.py
@@ -1335,7 +1345,7 @@ Il permet de tester :
 
 Modules associés :
 
-```text id="zn9v1w"
+```text
 download.py
 
 download_service.py
@@ -1356,7 +1366,7 @@ Il permet de tester :
 
 Modules associés :
 
-```text id="2hplra"
+```text
 progress.py
 
 progress_service.py
@@ -1372,7 +1382,7 @@ Le dossier `frontend` contient les tests des composants React.
 
 Structure :
 
-```text id="x0o3fm"
+```text
 frontend/
 
 ├── test_home.jsx
@@ -1406,7 +1416,7 @@ Il permet de tester :
 
 Module associé :
 
-```text id="8yq2t6"
+```text
 components/FileUploader.jsx
 ```
 
@@ -1416,7 +1426,7 @@ components/FileUploader.jsx
 
 La stratégie générale suit cette logique :
 
-```text id="d4qj3b"
+```text
 Développement module
 
 ↓
