@@ -539,3 +539,120 @@ Le workflow sera complété avec :
 
 ```
 ```
+
+---
+
+# 13. Workflow Git et collaboration
+
+Le développement de TranscriBITE est organisé avec Git et GitHub afin de permettre aux deux membres de travailler indépendamment tout en conservant une version stable du projet.
+
+## 13.1 Organisation
+
+```text
+main
+│
+├── member1
+│
+└── member2
+```
+
+La branche `main` représente la version stable du projet.
+
+Chaque membre développe sur sa propre branche.
+
+## 13.2 Workflow du Membre 1
+
+Le Membre 1 travaille sur :
+
+```text
+member1
+```
+
+Son cycle de travail est :
+
+```text
+Développement
+↓
+Tests locaux
+↓
+git status
+↓
+git diff
+↓
+git add
+↓
+git commit
+↓
+git push
+```
+
+## 13.3 Workflow du Membre 2
+
+Le Membre 2 travaille sur :
+
+```text
+member2
+```
+
+Il suit le même principe de développement, de test, de commit et de push.
+
+## 13.4 Intégration
+
+Lorsque le travail d'un membre est terminé et validé, il peut être proposé pour intégration dans `main` à travers une Pull Request.
+
+```text
+member1
+   ↓
+Pull Request
+   ↓
+main
+```
+
+ou :
+
+```text
+member2
+   ↓
+Pull Request
+   ↓
+main
+```
+
+## 13.5 Synchronisation
+
+Lorsqu'une mise à jour de `main` doit être intégrée dans une branche de développement :
+
+```bash
+git fetch origin
+git merge origin/main
+```
+
+Cette opération permet de maintenir les branches de développement synchronisées avec la version stable.
+
+## 13.6 Gestion des conflits
+
+En cas de modifications incompatibles entre les branches, les conflits sont résolus avant l'intégration.
+
+Le processus est :
+
+```text
+Conflit
+↓
+Analyse
+↓
+Résolution
+↓
+Tests
+↓
+Commit
+↓
+Merge
+```
+
+## 13.7 Principe général
+
+La règle principale est :
+
+> Le développement se fait sur les branches des membres et l'intégration stable se fait dans `main`.
+
+Cette organisation permet de limiter les conflits et de conserver une version stable du projet pendant le développement.

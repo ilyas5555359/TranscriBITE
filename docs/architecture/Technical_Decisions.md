@@ -578,3 +578,188 @@ Le Jour 10 prépare l'environnement nécessaire, mais l'intégration réelle des
 ## Justification
 
 Cette séparation permet de valider d'abord l'environnement puis de connecter les services du Membre 2 dans une phase dédiée.
+
+---
+
+# 19. Stratégie de gestion des versions
+
+### Objectif
+
+TranscriBITE utilise Git et GitHub afin d'assurer le suivi des modifications, la collaboration entre les deux membres et la conservation d'une version stable du projet.
+
+Le projet étant développé par deux membres avec des responsabilités distinctes, une organisation simple basée sur une branche principale et une branche de développement par membre a été retenue.
+
+### Organisation des branches
+
+La structure retenue est la suivante :
+
+```text
+main
+│
+├── member1
+│
+└── member2
+```
+
+#### Branche `main`
+
+La branche `main` représente la version stable et validée du projet.
+
+Les développements ne sont pas réalisés directement sur cette branche.
+
+Les modifications y sont intégrées après validation du travail effectué sur les branches des membres.
+
+#### Branche `member1`
+
+La branche `member1` est la branche principale de développement du Membre 1.
+
+Elle contient notamment les travaux liés à :
+
+* Backend fichiers
+* Upload
+* Validation
+* Process
+* Progress
+* Download
+* Health
+* Quality Check
+* Frontend
+* Documentation
+
+#### Branche `member2`
+
+La branche `member2` est la branche principale de développement du Membre 2.
+
+Elle contient notamment les travaux liés à :
+
+* Faster-Whisper
+* Transcription
+* Ollama
+* Résumé
+* Fonctionnalités IA
+
+### Règle de développement
+
+Chaque membre développe principalement sur sa propre branche.
+
+Le développement direct sur `main` est évité afin de conserver une version stable du projet.
+
+Le cycle de travail est :
+
+```text
+Développement
+↓
+Test local
+↓
+Vérification des modifications
+↓
+Commit
+↓
+Push vers la branche du membre
+↓
+Pull Request
+↓
+Validation
+↓
+Merge vers main
+```
+
+### Convention des commits
+
+Chaque commit doit représenter une étape logique et identifiable du développement.
+
+Exemples :
+
+```text
+Initialize TranscriBITE project
+
+Fix documentation directory structure
+
+Implement QualityService file validation
+
+Update technical documentation
+
+Prepare UML diagrams
+
+Integrate frontend upload module
+```
+
+Les messages vagues tels que `Update`, `Fix`, `Changes` ou `Final` sont évités.
+
+### Synchronisation avec `main`
+
+Lorsqu'une mise à jour de `main` doit être récupérée, le membre peut utiliser :
+
+```bash
+git fetch origin
+git merge origin/main
+```
+
+Cette méthode permet de récupérer les dernières modifications du dépôt distant puis de les intégrer explicitement dans la branche de travail.
+
+### Pull Requests
+
+Une Pull Request est utilisée lorsqu'une branche contient un ensemble de modifications terminé, testé et prêt à être intégré.
+
+Le processus recommandé est :
+
+```text
+member1 / member2
+↓
+Travail terminé
+↓
+Tests
+↓
+Push
+↓
+Pull Request
+↓
+Vérification
+↓
+Merge vers main
+```
+
+### Gestion des conflits
+
+En cas de conflit entre deux branches, le conflit doit être analysé et résolu avant la fusion.
+
+La procédure générale est :
+
+```text
+Détection du conflit
+↓
+Identification des fichiers concernés
+↓
+Analyse des modifications
+↓
+Résolution du conflit
+↓
+Tests
+↓
+Commit
+↓
+Fusion
+```
+
+L'utilisation de `git push --force` n'est pas utilisée comme méthode de résolution normale des conflits.
+
+### Initialisation du dépôt
+
+Le dépôt Git local de TranscriBITE a été initialisé après la préparation de l'environnement Python 3.12 du Jour 10.
+
+Cette décision permet de commencer le suivi Git avec un environnement de développement cohérent et validé.
+
+Le dépôt GitHub est utilisé comme dépôt distant officiel du projet.
+
+### État actuel
+
+Le dépôt contient actuellement :
+
+```text
+main
+member1
+```
+
+La branche `main` est synchronisée avec le dépôt GitHub et la branche `member1` est également publiée sur le dépôt distant.
+
+Le Membre 1 poursuit son développement sur `member1`.
