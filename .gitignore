@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+# Virtual Environment
+.venv/
+venv/
+env/
+# Environment
+backend/.env
+# Storage
+storage/uploads/*
+storage/outputs/*
+storage/temp/*
+storage/cache/*
+!storage/uploads/.gitkeep
+!storage/outputs/.gitkeep
+!storage/temp/.gitkeep
+!storage/cache/.gitkeep
+!storage/samples/.gitkeep
+# Logs
+logs/*.log
+!logs/.gitkeep
+# OS
+.DS_Store
+Thumbs.db
+# Node
+frontend/node_modules/
+frontend/dist/
