@@ -1,0 +1,79 @@
+@startuml
+title Diagramme de composants - TranscriBITE
+
+skinparam componentStyle rectangle
+
+package "Frontend" {
+    [React UI] as React
+    [API Client] as ApiClient
+}
+
+package "Backend FastAPI" {
+    [Upload Router] as UploadRouter
+    [Process Router] as ProcessRouter
+    [Progress Router] as ProgressRouter
+    [Download Router] as DownloadRouter
+    [Health Router] as HealthRouter
+
+    [File Service] as FileService
+    [Process Service] as ProcessService
+    [Progress Service] as ProgressService
+    [Quality Service] as QualityService
+    [Audio Service] as AudioService
+    [Transcription Service] as TranscriptionService
+    [Summary Service] as SummaryService
+    [Download Service] as DownloadService
+    [Health Service] as HealthService
+}
+
+package "Outils locaux" {
+    [FFmpeg] as FFmpeg
+    [Faster-Whisper] as Whisper
+    [Ollama] as Ollama
+}
+
+package "Stockage local" {
+    folder "storage/uploads" as UploadStorage
+    folder "storage/temp" as TempStorage
+    folder "storage/outputs" as OutputStorage
+    folder "storage/cache" as CacheStorage
+}
+
+React --> ApiClient
+
+ApiClient --> UploadRouter
+ApiClient --> ProcessRouter
+ApiClient --> ProgressRouter
+ApiClient --> DownloadRouter
+ApiClient --> HealthRouter
+
+UploadRouter --> FileService
+ProcessRouter --> ProcessService
+ProgressRouter --> ProgressService
+DownloadRouter --> DownloadService
+HealthRouter --> HealthService
+
+ProcessService --> QualityService
+ProcessService --> AudioService
+ProcessService --> TranscriptionService
+ProcessService --> SummaryService
+ProcessService --> ProgressService
+
+FileService --> UploadStorage
+
+QualityService --> UploadStorage
+
+AudioService --> FFmpeg
+AudioService --> TempStorage
+
+TranscriptionService --> Whisper
+TranscriptionService --> TempStorage
+
+SummaryService --> Ollama
+
+DownloadService --> OutputStorage
+DownloadService --> CacheStorage
+
+ProcessService --> OutputStorage
+
+@enduml

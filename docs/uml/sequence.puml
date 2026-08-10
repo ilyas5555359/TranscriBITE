@@ -1,0 +1,54 @@
+@startuml
+title Diagramme de séquence - Traitement d'un fichier TranscriBITE
+
+actor "Utilisateur" as User
+participant "Frontend React" as Frontend
+participant "FastAPI" as API
+participant "Upload Router" as Upload
+participant "File Service" as FileService
+participant "Process Service" as Process
+participant "Quality Service" as Quality
+participant "Audio Service" as Audio
+participant "Transcription Service" as Transcription
+participant "Summary Service" as Summary
+participant "Download Service" as Download
+
+User -> Frontend : Sélectionner un fichier
+Frontend -> API : POST /upload
+API -> Upload : Traiter la requête
+Upload -> FileService : Valider et sauvegarder le fichier
+FileService --> Upload : Métadonnées du fichier
+Upload --> API : Réponse d'upload
+API --> Frontend : Informations du fichier
+
+User -> Frontend : Lancer le traitement
+Frontend -> API : POST /process
+API -> Process : Démarrer le pipeline
+
+Process -> Quality : Analyser la qualité audio
+Quality --> Process : Résultat de l'analyse
+
+alt Fichier vidéo
+    Process -> Audio : Extraire l'audio avec FFmpeg
+    Audio --> Process : Audio extrait
+end
+
+Process -> Transcription : Transcrire le fichier
+Transcription --> Process : Résultat de transcription
+
+opt Génération du résumé activée
+    Process -> Summary : Générer le résumé
+    Summary --> Process : Résumé
+end
+
+Process --> API : Traitement terminé
+API --> Frontend : Résultats disponibles
+
+User -> Frontend : Télécharger le résultat
+Frontend -> API : GET /download
+API -> Download : Préparer le téléchargement
+Download --> API : Fichier de résultat
+API --> Frontend : Fichier à télécharger
+Frontend --> User : Résultat téléchargé
+
+@enduml

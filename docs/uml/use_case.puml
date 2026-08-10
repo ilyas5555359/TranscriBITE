@@ -1,0 +1,27 @@
+@startuml
+title Diagramme de cas d'utilisation - TranscriBITE
+
+left to right direction
+
+actor "Utilisateur" as User
+
+rectangle "TranscriBITE" {
+
+    usecase "Importer un fichier" as UC1
+    usecase "Choisir la langue" as UC2
+    usecase "Lancer le traitement" as UC3
+    usecase "Suivre la progression" as UC4
+    usecase "Consulter la transcription" as UC5
+    usecase "Générer un résumé" as UC6
+    usecase "Télécharger le résultat" as UC7
+}
+
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+User --> UC5
+User --> UC6
+User --> UC7
+
+@enduml

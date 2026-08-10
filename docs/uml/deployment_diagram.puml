@@ -1,0 +1,44 @@
+@startuml
+title Diagramme de déploiement - TranscriBITE
+
+node "Machine utilisateur\nWindows 10 / Windows 11" as PC {
+
+    node "Navigateur Web" as Browser {
+        artifact "Frontend React" as Frontend
+    }
+
+    node "Environnement Python" as Python {
+        artifact "FastAPI Backend" as Backend
+        artifact "Faster-Whisper" as Whisper
+        artifact "Ollama" as Ollama
+        artifact "FFmpeg" as FFmpeg
+    }
+
+    node "Système de fichiers local" as Storage {
+        artifact "uploads/" as Uploads
+        artifact "temp/" as Temp
+        artifact "outputs/" as Outputs
+        artifact "cache/" as Cache
+        artifact "logs/" as Logs
+    }
+}
+
+Browser --> Backend : HTTP
+Backend --> FFmpeg : Traitement média
+Backend --> Whisper : Transcription
+Backend --> Ollama : Résumé optionnel
+
+Backend --> Uploads : Lecture / écriture
+Backend --> Temp : Fichiers temporaires
+Backend --> Outputs : Résultats
+Backend --> Cache : Données temporaires
+Backend --> Logs : Journalisation
+
+note right of PC
+    Fonctionnement local et offline
+
+    Aucun service cloud requis
+    pour le traitement des fichiers.
+end note
+
+@enduml

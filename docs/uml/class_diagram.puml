@@ -1,0 +1,68 @@
+@startuml
+title Diagramme de classes - TranscriBITE
+
+class FileMetadata {
+    +file_id: UUID
+    +original_name: str
+    +stored_name: str
+    +file_path: str
+    +extension: str
+    +mime_type: str
+    +size: int
+    +media_type: str
+}
+
+class ProcessingState {
+    +file_id: UUID
+    +current_step: PipelineStep
+    +status: StepStatus
+    +progress: float
+    +message: str
+    +started_at: datetime
+    +updated_at: datetime
+}
+
+class TranscriptionResult {
+    +file_id: UUID
+    +language: str
+    +text: str
+    +duration: float
+    +created_at: datetime
+}
+
+enum PipelineStep {
+    UPLOAD
+    VALIDATION
+    MEDIA_DETECTION
+    AUDIO_QUALITY_ANALYSIS
+    AUDIO_EXTRACTION
+    TRANSCRIPTION
+    SUMMARY_GENERATION
+    PREPARE_RESULTS
+    CLEANUP
+    FINISHED
+    FAILED
+}
+
+enum StepStatus {
+    PENDING
+    IN_PROGRESS
+    COMPLETED
+    FAILED
+}
+
+class PipelineOrder {
+    +get_next_step()
+    +get_previous_step()
+    +get_step_order()
+}
+
+FileMetadata "1" --> "1" ProcessingState : état du traitement
+ProcessingState --> PipelineStep : étape actuelle
+ProcessingState --> StepStatus : statut
+
+FileMetadata "1" --> "0..1" TranscriptionResult : résultat
+
+PipelineOrder --> PipelineStep : ordonne
+
+@enduml
