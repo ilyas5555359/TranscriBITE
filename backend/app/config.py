@@ -1,7 +1,13 @@
 from dotenv import load_dotenv
 import os
+from pathlib import Path
 
-load_dotenv()
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+ENV_FILE = BASE_DIR / ".env"
+
+load_dotenv(ENV_FILE)
+
 
 APP_NAME = os.getenv("APP_NAME")
 APP_VERSION = os.getenv("APP_VERSION")
