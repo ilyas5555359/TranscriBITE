@@ -4,7 +4,7 @@ from datetime import datetime
 from app.enums.pipeline_step import PipelineStep
 from app.enums.step_status import StepStatus
 
-from app.models.processing_state import ProcessingState
+from app.models.processing_state import processing_state
 
 from app.schemas.process_schema import ProcessingStatus
 
@@ -15,7 +15,7 @@ class ProgressService:
 
     def __init__(self):
 
-        self.processing_state = ProcessingState()
+        self.processing_state = processing_state
 
     async def get_progress(
         self,

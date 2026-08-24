@@ -1,6 +1,8 @@
 from datetime import datetime
+from pathlib import Path
 from uuid import UUID
 
+from app.config import UPLOAD_FOLDER
 from app.utils.logger import logger
 
 from app.enums.pipeline_step import PipelineStep
@@ -12,7 +14,6 @@ from app.schemas.process_schema import (
     ProcessingStep
 )
 
-
 from app.services.download_service import DownloadService
 from app.services.progress_service import ProgressService
 from app.services.quality_service import QualityService
@@ -23,9 +24,7 @@ class ProcessService:
     def __init__(self):
 
         self.quality_service = QualityService()
-
         self.download_service = DownloadService()
-
         self.progress_service = ProgressService()
 
     async def start_process(
@@ -36,6 +35,11 @@ class ProcessService:
         try:
 
             processing = await self._initialize_processing(file_id)
+
+            await self.progress_service.processing_state.add_processing(
+                file_id,
+                processing
+            )
 
             await self._log_process_started(file_id)
 
@@ -72,14 +76,32 @@ class ProcessService:
         self,
         file_id: UUID
     ) -> None:
-        """
-        Vérifie que le fichier existe et qu'il respecte les règles de validation avant de lancer le pipeline.
-        L'implémentation réelle sera réalisée dans FileService.
-        """
 
-        raise NotImplementedError(
-            "Validation du fichier en cours de développement."
-        )
+        upload_folder = Path(UPLOAD_FOLDER)
+
+        if not upload_folder.is_dir():
+            raise FileNotFoundError(
+                "Le dossier des fichiers uploadés est introuvable."
+            )
+
+        file_prefix = f"{file_id.hex}_"
+
+        matches = [
+            path
+            for path in upload_folder.iterdir()
+            if path.is_file()
+            and path.name.startswith(file_prefix)
+        ]
+
+        if not matches:
+            raise FileNotFoundError(
+                f"Fichier introuvable pour le file_id: {file_id}"
+            )
+
+        if len(matches) > 1:
+            raise ValueError(
+                f"Plusieurs fichiers correspondent au file_id: {file_id}"
+            )
 
     async def _initialize_processing(
         self,
@@ -112,11 +134,6 @@ class ProcessService:
         file_id: UUID
     ) -> str:
 
-        """
-        Détermine automatiquement si le fichier est
-        un audio ou une vidéo.
-        """
-
         raise NotImplementedError(
             "Détection du type de média en cours de développement."
         )
@@ -125,11 +142,6 @@ class ProcessService:
         self,
         media_type: str
     ) -> list[PipelineStep]:
-
-        """
-        Sélectionne automatiquement le pipeline
-        adapté au type de média.
-        """
 
         if media_type == "audio":
 
@@ -154,7 +166,6 @@ class ProcessService:
             PipelineStep.COMPLETED
         ]
 
-
     async def _analyze_audio_quality(
         self,
         file_id: UUID
@@ -163,7 +174,6 @@ class ProcessService:
         raise NotImplementedError(
             "Analyse qualité en cours de développement."
         )
-
 
     async def _extract_audio(
         self,
@@ -174,7 +184,6 @@ class ProcessService:
             "Extraction audio en cours de développement."
         )
 
-
     async def _transcribe_audio(
         self,
         file_id: UUID
@@ -183,7 +192,6 @@ class ProcessService:
         raise NotImplementedError(
             "Transcription en cours de développement."
         )
-
 
     async def _generate_summary(
         self,
@@ -194,7 +202,6 @@ class ProcessService:
             "Résumé en cours de développement."
         )
 
-
     async def _prepare_results(
         self,
         file_id: UUID
@@ -203,7 +210,6 @@ class ProcessService:
         raise NotImplementedError(
             "Préparation des résultats en cours."
         )
-
 
     async def _cleanup(
         self,
@@ -220,17 +226,6 @@ class ProcessService:
         processing: ProcessingStatus,
         pipeline: list[PipelineStep]
     ) -> None:
-        """
-        Exécute les différentes étapes du pipeline:
-        # 1. Validation du fichier
-        # 2. Analyse qualité audio
-        # 3. Extraction audio si nécessaire
-        # 4. Transcription
-        # 5. Génération du résumé
-        # 6. Préparation des résultats
-        # 7. Nettoyage
-        en appelant les services spécialisés.
-        """
 
         for step in pipeline:
 
@@ -261,40 +256,9 @@ class ProcessService:
                     await self._cleanup(file_id)
 
     async def _handle_error(
-    self,
-    error: Exception
+        self,
+        error: Exception
     ) -> None:
-        """
-        Centralise la gestion des erreurs du pipeline.
-        # Déterminer le type d'erreur
-        """
-        # FILE_NOT_FOUND
-                # EMPTY_FILE
-                # FILE_TOO_LARGE
-                # UNSUPPORTED_FORMAT
-                # INVALID_MIME_TYPE
-                # INVALID_LANGUAGE
-                # AUDIO_NOT_FOUND
-                # EXTRACTION_FAILED
-                # TRANSCRIPTION_FAILED
-                # SUMMARY_FAILED
-                # DOWNLOAD_FAILED
-                # PROCESS_ALREADY_RUNNING
-                # INSUFFICIENT_SYSTEM_RESOURCES
-                # FILE_CORRUPTED
-                # TIMEOUT
-                # INTERNAL_ERROR
-
-
-        # Mettre à jour le statut du traitement
-
-        # Enregistrer l'erreur dans les logs
-
-        # Préparer la réponse API
-        """
-        Chaque exception sera convertie plus tard
-        vers un code d'erreur officiel de l'application.
-        """
 
         match error:
 
@@ -315,11 +279,6 @@ class ProcessService:
         processing: ProcessingStatus
     ) -> None:
 
-        # Mise à jour du statut final
-        # Calcul du temps d'exécution
-        # Nettoyage des ressources
-        # Préparation du téléchargement
-
         raise NotImplementedError(
             "Finalisation du traitement en cours de développement."
         )
@@ -328,62 +287,44 @@ class ProcessService:
         self,
         file_id: UUID
     ) -> None:
-        """
-        Journalise le démarrage du traitement.
-        """
 
         raise NotImplementedError(
             "Logger en cours de développement."
         )
-
 
     async def _log_step_started(
         self,
         step: PipelineStep
     ) -> None:
-        """
-        Journalise le début d'une étape.
-        """
 
         raise NotImplementedError(
             "Logger en cours de développement."
         )
-
 
     async def _log_step_completed(
         self,
         step: PipelineStep
     ) -> None:
-        """
-        Journalise la fin d'une étape.
-        """
 
         raise NotImplementedError(
             "Logger en cours de développement."
         )
-
 
     async def _log_process_completed(
         self,
         file_id: UUID
     ) -> None:
-        """
-        Journalise la fin du traitement.
-        """
 
         raise NotImplementedError(
             "Logger en cours de développement."
         )
-
 
     async def _log_error(
         self,
         error: Exception
     ) -> None:
-        """
-        Journalise une erreur du pipeline.
-        """
 
         raise NotImplementedError(
             "Logger en cours de développement."
         )
+    
