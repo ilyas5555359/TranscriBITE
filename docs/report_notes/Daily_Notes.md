@@ -705,6 +705,135 @@ Les travaux effectués comprennent :
 Cette journée a permis d'obtenir une documentation homogène, structurée et prête à accompagner les prochaines phases de développement.
 
 ---
+## Complément — Travail du Membre 2 sur l'intelligence artificielle
+
+### Objectif
+
+Documenter et valider les composants IA développés par le Membre 2 ainsi que leur fonctionnement avec le pipeline Backend.
+
+### Faster-Whisper
+
+L'intégration de Faster-Whisper a été réalisée afin de permettre la transcription locale des fichiers audio.
+
+Le moteur est exécuté localement sur CPU afin de respecter les contraintes matérielles du projet.
+
+Configuration retenue :
+
+```text
+Modèle : base
+Device : cpu
+Compute type : int8
+```
+
+Cette configuration a été retenue après comparaison des modèles `tiny`, `base` et `small`.
+
+### WhisperModelManager
+
+Le `WhisperModelManager` est responsable du chargement et de la gestion du modèle Faster-Whisper.
+
+Le modèle utilisé est récupéré depuis la configuration du Backend.
+
+Le chargement est effectué avec :
+
+```text
+device=cpu
+compute_type=int8
+```
+
+Le gestionnaire utilise également un chargement contrôlé du modèle afin d'éviter les chargements concurrents inutiles.
+
+### TranscriptionService
+
+Le `TranscriptionService` constitue le service métier responsable de la transcription.
+
+Il reçoit le chemin du fichier audio, utilise `WhisperModelManager` pour accéder au modèle Faster-Whisper et retourne les informations nécessaires au pipeline.
+
+Le résultat de transcription contient notamment :
+
+* le texte transcrit
+* la langue détectée
+* les segments de transcription
+* les informations temporelles associées aux segments
+
+### Endpoint `/transcribe`
+
+L'endpoint `/transcribe` permet de déclencher une transcription à partir d'un fichier audio.
+
+Le routeur délègue le traitement au `TranscriptionService`.
+
+La logique de transcription reste donc séparée du routeur conformément à l'architecture Backend du projet.
+
+### Benchmark des modèles
+
+Les modèles Faster-Whisper `tiny`, `base` et `small` ont été comparés sur la machine de développement.
+
+Les résultats obtenus sont :
+
+| Modèle | Chargement | Transcription | RAM après | Langue | Segments |
+| ------ | ---------: | ------------: | --------: | ------ | -------: |
+| tiny   |     1.50 s |        8.16 s | 139.14 MB | fr     |       12 |
+| base   |     0.87 s |       11.98 s | 191.15 MB | fr     |       14 |
+| small  |     2.00 s |       34.61 s | 366.35 MB | fr     |       18 |
+
+Les trois modèles fonctionnent correctement en CPU avec `int8`.
+
+Le modèle `base` a été retenu comme modèle officiel du projet car il représente le meilleur compromis entre temps d'exécution, consommation mémoire et qualité de transcription.
+
+### Validation réelle Extract → Transcription
+
+Une validation réelle du pipeline a également été effectuée.
+
+Un fichier audio réel `test_real.mp3` a été utilisé.
+
+Le traitement réalisé est :
+
+```text
+test_real.mp3
+      |
+      v
+Extraction audio
+      |
+      v
+Fichier WAV extrait
+      |
+      v
+TranscriptionService
+      |
+      v
+Faster-Whisper base
+      |
+      v
+Transcription réussie
+```
+
+Le résultat de l'API `/transcribe` a retourné :
+
+```text
+success = True
+message = Transcription completed successfully
+language = fr
+```
+
+Cette validation confirme que le flux réel entre l'extraction audio et le service de transcription fonctionne correctement.
+
+### Résultat du travail IA
+
+À la fin de cette phase, le composant de transcription du Membre 2 est opérationnel et validé indépendamment de l'intégration complète du pipeline.
+
+Les éléments suivants sont validés :
+
+* Faster-Whisper fonctionnel
+* modèle `base` sélectionné
+* exécution CPU
+* `compute_type=int8`
+* WhisperModelManager fonctionnel
+* TranscriptionService fonctionnel
+* endpoint `/transcribe` fonctionnel
+* détection de langue fonctionnelle
+* segments de transcription disponibles
+* validation réelle Extract → Transcription réussie
+
+L'intégration complète avec le `ProcessService` et le Frontend reste prévue pour les étapes d'intégration ultérieures du projet.
 
 # Prochaines mises à jour
 
