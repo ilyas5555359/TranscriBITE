@@ -6,9 +6,9 @@ from app.routers.process import router as process_router
 from app.routers.progress import router as progress_router
 from app.routers.download import router as download_router
 from app.routers.health import router as health_router
-
 from app.utils.logger import logger
-
+from app.routers.transcription import router as transcription_router
+from app.routers.extract import router as extract_router
 
 logger.info("TranscriBITE backend started.")
 
@@ -23,6 +23,8 @@ app.include_router(process_router)
 app.include_router(progress_router)
 app.include_router(download_router)
 app.include_router(health_router)
+app.include_router(transcription_router)
+app.include_router(extract_router)
 
 @app.get("/")
 def root():

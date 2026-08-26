@@ -43,3 +43,6 @@ class ProcessingState:
     ) -> bool:
 
         return file_id in self._processing_states
+
+
+processing_state = ProcessingState()
