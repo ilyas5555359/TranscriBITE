@@ -562,7 +562,7 @@ Cette configuration évite de dépendre d'un chemin absolu propre à une seule m
 
 ## Décision
 
-Ollama est utilisé comme composant local destiné à la future génération de résumé.
+Ollama est utilisé comme composant local pour générer les résumés.
 
 ## Justification
 
@@ -572,11 +572,13 @@ Cette décision respecte la contrainte offline du projet. Le serveur local et la
 
 ## Décision
 
-Le Jour 10 prépare l'environnement nécessaire, mais l'intégration réelle des services IA avec le pipeline du Membre 1 reste planifiée pour la phase d'intégration du Jour 14.
+Les services IA sont intégrés au pipeline principal après la préparation de
+l'environnement.
 
 ## Justification
 
-Cette séparation permet de valider d'abord l'environnement puis de connecter les services du Membre 2 dans une phase dédiée.
+Cette organisation permet de valider l'environnement puis de connecter les
+services du Membre 2 au pipeline contrôlé par le Membre 1.
 
 ---
 

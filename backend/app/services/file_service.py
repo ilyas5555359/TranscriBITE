@@ -46,11 +46,13 @@ def check_file_exists(
     return file_path
 
 
-def save_uploaded_file(file: UploadFile) -> Path:
+def save_uploaded_file(file: UploadFile) -> dict:
 
     upload_path = create_upload_directory()
 
-    unique_name = generate_unique_filename(file.filename)
+    file_uuid = uuid.uuid4()
+    safe_filename = sanitize_filename(file.filename)
+    unique_name = f"{file_uuid.hex}_{safe_filename}"
 
     destination = upload_path / unique_name
 
@@ -62,7 +64,11 @@ def save_uploaded_file(file: UploadFile) -> Path:
 
         logger.info(f"File successfully saved: {destination}")
 
-        return destination
+        return {
+            "file_id": str(file_uuid),
+            "stored_filename": unique_name,
+            "path": destination,
+        }
 
     except Exception as error:
         logger.error(f"Error while saving file: {error}")

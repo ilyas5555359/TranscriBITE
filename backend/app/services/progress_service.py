@@ -10,6 +10,8 @@ from app.schemas.process_schema import ProcessingStatus
 
 from app.schemas.progress_schema import ProgressResponse
 
+from app.utils.logger import logger
+
 
 class ProgressService:
 
@@ -61,6 +63,7 @@ class ProgressService:
         )
 
         processing.current_step = step
+        self.processing_state._save()
 
 
     async def update_step_status(
@@ -80,9 +83,18 @@ class ProgressService:
 
                 processing_step.status = status
 
+                if status == StepStatus.IN_PROGRESS:
+                    processing_step.started_at = datetime.now()
+                elif status in {
+                    StepStatus.COMPLETED,
+                    StepStatus.FAILED,
+                }:
+                    processing_step.finished_at = datetime.now()
+
                 break
 
         processing.current_status = status
+        self.processing_state._save()
 
 
     async def update_progress_percentage(
@@ -105,6 +117,7 @@ class ProgressService:
         if total_steps == 0:
 
             processing.progress_percentage = 0.0
+            self.processing_state._save()
 
             return
 
@@ -112,6 +125,7 @@ class ProgressService:
             (completed_steps / total_steps) * 100,
             2
         )
+        self.processing_state._save()
 
 
     async def complete_processing(
@@ -130,6 +144,9 @@ class ProgressService:
         processing.progress_percentage = 100.0
 
         processing.finished_at = datetime.now()
+        self.processing_state._save()
+
+        logger.info("Traitement terminé pour %s", file_id)
 
 
     async def fail_processing(
@@ -150,7 +167,7 @@ class ProgressService:
 
         for step in processing.steps:
 
-            if step.step == processing.current_step:
+            if step.step == processing.current_step or step.status == StepStatus.IN_PROGRESS:
 
                 step.status = StepStatus.FAILED
 
@@ -158,52 +175,6 @@ class ProgressService:
 
                 break
 
+            self.processing_state._save()
 
-    async def _log_progress_started(
-        self,
-        file_id: UUID
-    ) -> None:
-
-        raise NotImplementedError(
-            "Logger en cours de développement."
-        )
-
-
-    async def _log_step_updated(
-        self,
-        step: PipelineStep
-    ) -> None:
-
-        raise NotImplementedError(
-            "Logger en cours de développement."
-        )
-
-
-    async def _log_progress_updated(
-        self,
-        progress: float
-    ) -> None:
-
-        raise NotImplementedError(
-            "Logger en cours de développement."
-        )
-
-
-    async def _log_progress_completed(
-        self,
-        file_id: UUID
-    ) -> None:
-
-        raise NotImplementedError(
-            "Logger en cours de développement."
-        )
-
-
-    async def _log_error(
-        self,
-        error: Exception
-    ) -> None:
-
-        raise NotImplementedError(
-            "Logger en cours de développement."
-        )
+        logger.error("Traitement échoué pour %s: %s", file_id, message)

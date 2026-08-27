@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import APIRouter
+from fastapi import APIRouter, BackgroundTasks
 from fastapi import HTTPException
 from fastapi import status
 
@@ -20,11 +20,27 @@ process_service = ProcessService()
     response_model=ProcessResponse
 )
 async def start_process(
-    file_id: UUID
+    file_id: UUID,
+    background_tasks: BackgroundTasks,
+    language: str = "auto",
 ) -> ProcessResponse:
 
     try:
-        return await process_service.start_process(file_id)
+        processing, pipeline = await process_service.prepare_process(
+            file_id,
+            language,
+        )
+        background_tasks.add_task(
+            process_service.execute_background,
+            file_id,
+            processing,
+            pipeline,
+        )
+        return ProcessResponse(
+            success=True,
+            message="Traitement démarré.",
+            processing=processing,
+        )
 
     except FileNotFoundError as error:
         raise HTTPException(

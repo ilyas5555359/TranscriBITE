@@ -138,7 +138,7 @@ Préparer le téléchargement d'un résultat généré par le pipeline.
 ### Paramètres
 
 * `file_id` : UUID
-* `download_format` : format demandé
+* `download_format` : `txt`, `json` ou `pdf`
 
 ### Réponse
 
@@ -487,15 +487,26 @@ Le modèle `base` constitue actuellement le compromis retenu entre :
 
 ## État actuel
 
-Le module Summary fait partie des responsabilités du Membre 2.
+Le module Summary utilise Ollama pour générer un résumé local à partir du texte
+transcrit.
 
-L'architecture du projet prévoit l'utilisation optionnelle d'Ollama pour générer un résumé local de la transcription.
+### Requête
 
-Cependant, aucun endpoint Summary final n'est actuellement exposé dans l'OpenAPI du backend.
+```json
+{
+   "job_id": "identifiant_du_traitement",
+   "text": "Texte transcrit",
+   "language": "fr"
+}
+```
+
+### Réponse
+
+La réponse contient `data.summary`, `data.model` et `job_id`.
 
 ### État
 
-**À finaliser lors de l'implémentation Summary.**
+**Développé — Membre 2**
 
 ---
 
@@ -525,6 +536,7 @@ GET  /download/{file_id}/{download_format}
 GET  /health
 POST /extract
 POST /transcribe
+POST /summary
 ```
 
 ---
@@ -567,7 +579,7 @@ Toute modification du contrat d'API doit être communiquée aux deux membres ava
 | Quality       | Utilisé par ProcessService                | Développé            |
 | Extract       | POST /extract                             | Développé            |
 | Transcription | POST /transcribe                          | Développé — Membre 2 |
-| Summary       | À définir                                 | À finaliser          |
+| Summary       | POST /summary                             | Développé — Membre 2 |
 
 ---
 

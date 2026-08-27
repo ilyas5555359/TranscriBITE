@@ -720,8 +720,11 @@ backend/requirements.txt
 
 FFmpeg est installé localement et accessible par le PATH.
 
-Ollama est installé localement et accessible par le PATH. Il fournit le service local destiné à la future génération de résumé.
+Ollama est installé localement et accessible par le PATH. Il fournit le service local de génération de résumé.
+
+Le Health Check vérifie également la présence de Torch et Faster-Whisper ainsi
+que la disponibilité du serveur Ollama.
 
 ## Intégration IA
 
-Le Jour 10 valide l'environnement nécessaire à l'IA. La connexion réelle des services du Membre 2 au pipeline du Membre 1 reste planifiée pour le Jour 14.
+Le Jour 10 valide l'environnement nécessaire à l'IA. Les services du Membre 2 sont maintenant connectés au pipeline du Membre 1 et validés par les tests et le smoke test réel.

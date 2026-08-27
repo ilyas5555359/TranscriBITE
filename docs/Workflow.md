@@ -436,7 +436,7 @@ Formats prévus :
 
 * TXT
 * JSON
-* PDF futur
+* PDF
 
 Le module Download permet :
 

@@ -1,5 +1,19 @@
 # Performance Comparison — Faster-Whisper
 
+## Mesure de validation finale — 2026-08-26
+
+Mesure réalisée avec le script `scripts/benchmark_whisper.py` sur le même
+fichier vocal français, en CPU/int8 :
+
+| Modèle | Temps de transcription | Langue | Segments |
+|---|---:|---|---:|
+| tiny | 8,79 s | fr | 1 |
+| base | 9,44 s | fr | 1 |
+| small | 15,14 s | fr | 1 |
+
+Le modèle `base` reste le choix retenu pour son compromis entre qualité et
+temps d'exécution.
+
 
 
 ## Objectif

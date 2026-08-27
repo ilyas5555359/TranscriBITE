@@ -40,19 +40,62 @@ Chaque résultat indiquera :
 
 # Jour 18 — Tests Backend
 
-Les résultats seront ajoutés après l'exécution des tests Backend.
+Date d'exécution : 2026-08-26
+
+Environnement : Python 3.12.10 dans `.venv`, dépendances backend verrouillées installées avec succès.
+
+Commande : `PYTHONPATH=backend .venv/Scripts/pytest.exe -q tests/backend`
+
+Résultat initial : **56 tests réussis**.
+
+Modules couverts :
+
+- Audio / extraction FFmpeg : 5 tests réussis
+- Upload et validation : 20 tests réussis, dont 10 combinaisons extension/MIME
+- Process et pipelines audio/vidéo : 9 tests réussis
+- Progression et états d'échec : 9 tests réussis
+- Téléchargement TXT/JSON : 8 tests réussis
+- Health : 7 tests réussis
+- Qualité audio : 8 tests réussis
+
+Correction vérifiée : les fichiers vides sont rejetés et une étape active passe à `FAILED` lorsqu'un traitement échoue.
 
 ---
 
 # Jour 19 — Tests Frontend
 
-Les résultats seront ajoutés après l'exécution des tests Frontend.
+Date d'exécution : 2026-08-26
+
+Commandes : `npm test`, `npm run lint`, `npm run build`
+
+Résultat :
+
+- Vitest : **3 tests réussis**
+- ESLint : **réussi**
+- Build Vite : **réussi**
+- `npm audit --audit-level=high` : **0 vulnérabilité**
+
+Scénarios couverts : bouton désactivé sans fichier, workflow transcription/résumé réussi et affichage d'une erreur backend.
 
 ---
 
 # Jour 20 — Tests d'intégration et performances
 
-Les résultats seront ajoutés après l'exécution :
+Validation manuelle exécutée le 2026-08-26 :
+
+- `/health` : HTTP 200
+- `/upload/` : HTTP 200
+- `/process/start` : HTTP 200 avec Faster-Whisper `base` CPU/int8
+- `/summary` : HTTP 200 avec Ollama `gemma2:2b`
+- `/progress/{file_id}` : progression à 100 %
+- `/download/{file_id}/txt` : HTTP 200
+- `/download/{file_id}/json` : HTTP 200 et JSON valide
+
+Les 10 formats configurés ont été exécutés avec des fixtures vocales générées localement : `.wav`, `.mp3`, `.m4a`, `.flac`, `.aac`, `.ogg`, `.mp4`, `.avi`, `.mov` et `.mkv`. Upload et traitement réel : **10/10 réussis**.
+
+Les résultats de performance définitifs Whisper ne sont pas réexécutés conformément au plan.
+
+Les tests suivants restent à compléter :
 
 - des tests d'intégration
 - des tests de performance
@@ -60,12 +103,22 @@ Les résultats seront ajoutés après l'exécution :
 
 ---
 
-# Bilan final
+# Bilan intermédiaire
 
-Cette section présentera :
+État au 2026-08-26 :
 
-- le nombre total de tests exécutés
-- le nombre de tests réussis
-- le nombre de tests échoués
-- les anomalies corrigées
-- la validation finale du projet
+- 90 tests backend réussis et 5 tests frontend réussis
+- 92 tests backend réussis et 5 tests frontend réussis
+- aucun échec dans les campagnes automatisées exécutées
+- pipeline réel audio → transcription → résumé → téléchargement validé
+- vulnérabilité npm haute corrigée
+- un test d'intégration HTTP automatisé est ajouté et réussi
+- les 10 extensions déclarées sont couvertes par les tests de validation et de routage
+- les dix formats ont été générés et vérifiés par FFmpeg/FFprobe
+- benchmark réel CPU/int8 sur un court fichier vocal en français : tiny 8,79 s,
+  base 9,44 s, small 15,14 s
+- les traitements Whisper complets des dix codecs restent à exécuter séparément
+
+Les tests HTTP utilisent `fastapi.testclient.TestClient`. La version actuelle
+de Starlette signale une dépréciation liée à `httpx`; les tests passent et cet
+avertissement est accepté jusqu'à l'harmonisation future des dépendances.

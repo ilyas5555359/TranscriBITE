@@ -1,8 +1,12 @@
+"""Route de téléchargement des résultats de transcription."""
+
 from uuid import UUID
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, status
+from fastapi.responses import FileResponse
 
-from app.schemas.download_schema import DownloadResponse
+from pathlib import Path
+
 from app.services.download_service import DownloadService
 
 
@@ -14,24 +18,50 @@ router = APIRouter(
 download_service = DownloadService()
 
 
+MEDIA_TYPES = {
+    "txt": "text/plain",
+    "json": "application/json",
+    "pdf": "application/pdf",
+}
+
+
 @router.get(
     "/{file_id}/{download_format}",
-    response_model=DownloadResponse
 )
-async def prepare_download(
+async def download_file(
     file_id: UUID,
-    download_format: str
-) -> DownloadResponse:
+    download_format: str,
+):
+    """Télécharger le résultat de transcription (TXT ou JSON)."""
 
-    result = await download_service.prepare_download(
-        file_id=file_id,
-        download_format=download_format
-    )
+    try:
+        result = await download_service.prepare_download(
+            file_id=file_id,
+            download_format=download_format,
+        )
 
-    return DownloadResponse(
-        success=True,
-        message="Téléchargement prêt.",
-        file_id=result["file_id"],
-        filename=result["filename"],
-        download_format=result["download_format"]
-    )
+        file_path = Path(result["file_path"])
+
+        if not file_path.is_file():
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Le fichier généré est introuvable.",
+            )
+
+        return FileResponse(
+            path=str(file_path),
+            filename=result["filename"],
+            media_type=MEDIA_TYPES.get(download_format, "application/octet-stream"),
+        )
+
+    except FileNotFoundError as error:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(error),
+        ) from error
+
+    except ValueError as error:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(error),
+        ) from error

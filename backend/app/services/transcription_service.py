@@ -22,6 +22,7 @@ class TranscriptionService:
     def transcribe(
         self,
         file_path: str,
+        language: str = "auto",
     ) -> dict[str, Any]:
         """Retourne le texte, la langue et les segments horodatés."""
 
@@ -35,12 +36,15 @@ class TranscriptionService:
         try:
             model = self._manager.get_model()
 
-            segments, info = model.transcribe(
-                str(audio_path),
-                task="transcribe",
-                beam_size=5,
-                vad_filter=True,
-            )
+            options = {
+                "task": "transcribe",
+                "beam_size": 5,
+                "vad_filter": True,
+            }
+            if language != "auto":
+                options["language"] = language
+
+            segments, info = model.transcribe(str(audio_path), **options)
 
             formatted_segments = [
                 {

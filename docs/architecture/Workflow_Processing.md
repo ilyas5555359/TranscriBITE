@@ -552,7 +552,7 @@ Le téléchargement suit les étapes suivantes :
 3. Préparation du téléchargement TXT ou JSON
 4. Retour des informations de téléchargement
 
-L'architecture prévoit également une future génération de fichiers PDF.
+Le pipeline permet également la génération de fichiers PDF.
 
 ## 7.1 Workflow interne du ProcessService
 

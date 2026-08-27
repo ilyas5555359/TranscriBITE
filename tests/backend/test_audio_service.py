@@ -44,7 +44,7 @@ def test_extract_router_can_be_loaded() -> None:
     app = FastAPI()
     app.include_router(extract_router)
 
-    assert any(route.path == "/extract" for route in app.routes)
+    assert any(route.path == "/extract" for route in extract_router.routes)
 
 
 def test_extract_audio_creates_whisper_compatible_wav(

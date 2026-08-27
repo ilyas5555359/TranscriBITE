@@ -73,9 +73,6 @@ Formats disponibles :
 
 - TXT
 - JSON
-
-Prévu :
-
 - PDF
 
 ---

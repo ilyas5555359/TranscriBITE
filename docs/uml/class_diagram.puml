@@ -16,18 +16,17 @@ class ProcessingState {
     +file_id: UUID
     +current_step: PipelineStep
     +status: StepStatus
-    +progress: float
+    +progress_percentage: float
     +message: str
     +started_at: datetime
-    +updated_at: datetime
+    +finished_at: datetime
 }
 
 class TranscriptionResult {
     +file_id: UUID
     +language: str
     +text: str
-    +duration: float
-    +created_at: datetime
+    +segments: list
 }
 
 enum PipelineStep {
@@ -38,9 +37,9 @@ enum PipelineStep {
     AUDIO_EXTRACTION
     TRANSCRIPTION
     SUMMARY_GENERATION
-    PREPARE_RESULTS
+    RESULT_PREPARATION
     CLEANUP
-    FINISHED
+    COMPLETED
     FAILED
 }
 

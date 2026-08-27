@@ -29,6 +29,11 @@ class ProcessingStatus(BaseModel):
 
     file_id: str = Field(..., description="Identifiant unique du fichier")
 
+    original_filename: Optional[str] = Field(
+        default=None,
+        description="Nom original du fichier traité"
+    )
+
     current_step: PipelineStep = Field(
         ...,
         description="Étape actuellement exécutée"
@@ -59,6 +64,21 @@ class ProcessingStatus(BaseModel):
     finished_at: Optional[datetime] = Field(
         default=None,
         description="Date et heure de fin du traitement"
+    )
+
+    transcription_result: Optional[dict] = Field(
+        default=None,
+        description="Résultat de la transcription (texte, langue, segments)"
+    )
+
+    quality_result: Optional[dict] = Field(
+        default=None,
+        description="Métriques de qualité du média"
+    )
+
+    summary_result: Optional[dict] = Field(
+        default=None,
+        description="Résumé généré à partir de la transcription"
     )
 
 

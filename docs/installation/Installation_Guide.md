@@ -176,7 +176,8 @@ http://127.0.0.1:8000/docs
 
 Les deux membres doivent utiliser Python 3.12 et un environnement de dépendances correspondant au `requirements.txt` validé.
 
-Les détails de l'intégration des services IA seront traités lors de la phase d'intégration prévue au Jour 14.
+Les services IA sont intégrés au pipeline et leur disponibilité est vérifiable
+avec `scripts/check_environment.py`.
 
 ## 8. État de validation
 

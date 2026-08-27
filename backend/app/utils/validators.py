@@ -56,6 +56,12 @@ def validate_uploaded_file(file: UploadFile):
     file_size = file.file.tell()
     file.file.seek(0)
 
+    if file_size == 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Uploaded file is empty."
+        )
+
     max_size = MAX_FILE_SIZE * 1024 * 1024
 
     if file_size > max_size:

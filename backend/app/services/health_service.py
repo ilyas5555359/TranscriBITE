@@ -1,5 +1,8 @@
+import importlib.util
 from pathlib import Path
 import shutil
+
+from app.services.summary_service import summary_service
 
 from app.schemas.health_schema import (
     HealthResponse,
@@ -24,7 +27,8 @@ class HealthService:
             await self._check_backend(),
             await self._check_configuration(),
             await self._check_storage(),
-            await self._check_ffmpeg()
+            await self._check_ffmpeg(),
+            await self._check_ai_dependencies(),
         ]
 
         success = all(
@@ -78,6 +82,34 @@ class HealthService:
                 status="error",
                 message=str(error)
             )
+
+    async def _check_ai_dependencies(self) -> HealthStatus:
+        """Vérifie les modules IA et la disponibilité d'Ollama."""
+
+        required_modules = ("torch", "faster_whisper")
+        missing = [
+            module for module in required_modules
+            if importlib.util.find_spec(module) is None
+        ]
+        if missing:
+            return HealthStatus(
+                component="ai",
+                status="error",
+                message=f"Modules IA absents : {', '.join(missing)}.",
+            )
+
+        if not await summary_service.check_availability():
+            return HealthStatus(
+                component="ai",
+                status="error",
+                message="Ollama est indisponible.",
+            )
+
+        return HealthStatus(
+            component="ai",
+            status="ok",
+            message="Torch, Faster-Whisper et Ollama disponibles.",
+        )
 
     async def _check_storage(
         self

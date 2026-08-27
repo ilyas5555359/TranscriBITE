@@ -175,11 +175,11 @@ La génération des fichiers de sortie est isolée afin de simplifier la mainten
 
 ### Choix
 
-Prévoir dès maintenant les téléchargements TXT, JSON et PDF.
+Prévoir les téléchargements TXT, JSON et PDF.
 
 ### Justification
 
-Les formats TXT et JSON seront développés progressivement tandis que l'architecture est déjà prête pour intégrer le PDF sans refactoring.
+Les formats TXT, JSON et PDF sont disponibles via le service de téléchargement.
 
 ---
 
@@ -297,7 +297,7 @@ Le chemin absolu dépendrait de la machine. L'utilisation du PATH rend la config
 
 ### Choix
 
-Utiliser Ollama comme composant local pour la future génération de résumé.
+Utiliser Ollama comme composant local pour la génération de résumé.
 
 ### Justification
 

@@ -1,27 +1,23 @@
-function DownloadButtons({
-  transcript = '',
-  summary = '',
-}) {
-  const downloadText = (content, filename) => {
-    if (!content) {
+import { useState } from 'react'
+import { downloadResult } from '../services/api'
+
+function DownloadButtons({ fileId = '', onError }) {
+  const [downloadingFormat, setDownloadingFormat] = useState('')
+
+  const handleDownload = async (format) => {
+    if (!fileId || downloadingFormat) {
       return
     }
 
-    const blob = new Blob([content], {
-      type: 'text/plain;charset=utf-8',
-    })
+    setDownloadingFormat(format)
 
-    const url = URL.createObjectURL(blob)
-
-    const link = document.createElement('a')
-    link.href = url
-    link.download = filename
-
-    document.body.appendChild(link)
-    link.click()
-    link.remove()
-
-    URL.revokeObjectURL(url)
+    try {
+      await downloadResult(fileId, format)
+    } catch (error) {
+      onError?.(error.message || 'Le téléchargement a échoué.')
+    } finally {
+      setDownloadingFormat('')
+    }
   }
 
   return (
@@ -32,23 +28,34 @@ function DownloadButtons({
         <button
           type="button"
           className="button button--secondary"
-          disabled={!transcript}
-          onClick={() =>
-            downloadText(transcript, 'transcription.txt')
-          }
+          disabled={!fileId || Boolean(downloadingFormat)}
+          onClick={() => handleDownload('txt')}
         >
-          Télécharger la transcription
+          {downloadingFormat === 'txt'
+            ? 'Téléchargement…'
+            : 'Télécharger la transcription (TXT)'}
         </button>
 
         <button
           type="button"
           className="button button--secondary"
-          disabled={!summary}
-          onClick={() =>
-            downloadText(summary, 'resume.txt')
-          }
+          disabled={!fileId || Boolean(downloadingFormat)}
+          onClick={() => handleDownload('json')}
         >
-          Télécharger le résumé
+          {downloadingFormat === 'json'
+            ? 'Téléchargement…'
+            : 'Télécharger les données (JSON)'}
+        </button>
+
+        <button
+          type="button"
+          className="button button--secondary"
+          disabled={!fileId || Boolean(downloadingFormat)}
+          onClick={() => handleDownload('pdf')}
+        >
+          {downloadingFormat === 'pdf'
+            ? 'Téléchargement…'
+            : 'Télécharger le rapport (PDF)'}
         </button>
       </div>
     </section>
