@@ -14,8 +14,6 @@ L'application est conçue selon une architecture modulaire afin de faciliter son
 
 Le projet est développé en séparant le Frontend et le Backend afin de respecter une architecture moderne de type client/serveur.
 
-
-
 ## 2. Objectifs
 
 L'architecture de TranscriBITE a été conçue afin de répondre aux objectifs suivants :
@@ -28,8 +26,6 @@ L'architecture de TranscriBITE a été conçue afin de répondre aux objectifs s
 * Faciliter les tests unitaires et les tests d'intégration en limitant les dépendances entre les modules.
 * Préparer une architecture évolutive permettant l'ajout de nouvelles fonctionnalités (nouveaux formats de fichiers, nouveaux modèles d'IA, nouveaux types d'export, etc.).
 * Garantir une bonne lisibilité du projet grâce à une organisation rigoureuse des dossiers et des responsabilités.
-
-
 
 ## 3. Architecture générale
 
@@ -45,11 +41,9 @@ Les fichiers importés, les fichiers temporaires ainsi que les résultats géné
 
 Cette architecture modulaire facilite la maintenance, les tests, les évolutions futures ainsi que le travail collaboratif entre les deux membres du projet.
 
-
-
 ## 4. Architecture Backend
 
-Le Backend de TranscriBITE est développé avec **FastAPI** et suit une architecture modulaire. En suivons le principe de responsabilité unique (Single Responsibility Principle) chaque dossier possède une responsabilité précise afin de garantir une bonne organisation du code et de faciliter la maintenance.
+Le Backend de TranscriBITE est développé avec **FastAPI** et suit une architecture modulaire. En respectant le principe de responsabilité unique (Single Responsibility Principle), chaque dossier possède une responsabilité précise afin de garantir une bonne organisation du code et de faciliter la maintenance.
 
 ### Routers
 
@@ -202,13 +196,59 @@ Il contient les dépendances nécessaires au fonctionnement de l'application et 
 
 Le dossier `.venv` n'est pas destiné à être versionné dans Git.
 
-
-
 ## 5. Architecture Frontend
 
 Le Frontend de TranscriBITE est développé avec **React**. Il fournit une interface utilisateur simple, claire et modulaire permettant de piloter l'ensemble du processus de transcription.
 
 L'organisation du Frontend repose sur plusieurs dossiers spécialisés :
+
+### `components`
+
+Le dossier `components` regroupe les briques réutilisables de l'interface. Il contient des éléments comme les formulaires d'upload, les boutons de lancement, les composants de progression et les zones d'affichage des résultats.
+
+### `pages`
+
+Le dossier `pages` contient les écrans de l'application. Chaque page correspond à une vue fonctionnelle: accueil, upload, traitement, résultats et état du système.
+
+### `services`
+
+Le dossier `services` contient les appelants API du Frontend. Ces services centralisent les requêtes HTTP envoyées au Backend et encapsulent la logique d'appel des routes de traitement, de progression et de téléchargement.
+
+### `styles`
+
+Le dossier `styles` regroupe les règles de mise en page, les thèmes visuels et les composants de présentation.
+
+### `public` et `assets`
+
+Les ressources statiques, images et fichiers publics sont stockés dans les dossiers d'assets et de public afin d'isoler le contenu visuel du code applicatif.
+
+## 6. Cohérence globale de l'architecture
+
+L'architecture de TranscriBITE est pensée pour concilier trois objectifs :
+
+* simplicité d'utilisation pour l'utilisateur final
+* modularité pour le développement
+* stabilité pour les traitements IA locale
+
+Chaque couche possède une responsabilité distincte :
+
+```text
+Frontend (UI)
+↓
+API REST (FastAPI)
+↓
+Services métier
+↓
+Traitement local (FFmpeg, Whisper, Ollama)
+↓
+Stockage des résultats
+```
+
+Cette organisation permet d'ajouter de nouvelles fonctionnalités sans casser les mécanismes existants, tout en gardant le système facile à maintenir.
+
+## 7. Conclusion
+
+L'architecture de TranscriBITE repose sur une séparation claire entre interface, API et services métier. Ce découpage permet un développement progressif, une meilleure testabilité et une exécution locale fiable des traitements IA. L'ensemble est prêt pour des évolutions futures comme l'ajout de nouveaux formats, nouveaux modèles, ou de fonctionnalités avancées de suivi et d'export.
 
 ### Assets
 

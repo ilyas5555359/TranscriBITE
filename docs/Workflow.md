@@ -226,6 +226,175 @@ Validation
 
 ↓
 
+Détection du type de média
+
+↓
+
+Analyse de qualité
+
+↓
+
+Extraction audio (si vidéo)
+
+↓
+
+Transcription
+
+↓
+
+Résumé IA
+
+↓
+
+Préparation des résultats
+
+↓
+
+Téléchargement / visualisation
+```
+
+Chaque étape est gérée de manière modulée par les services du Backend et orchestrée par le service principal de traitement.
+
+---
+
+# 7. Détail du flux de traitement
+
+## 7.1 Upload
+
+L'utilisateur envoie un fichier audio ou vidéo via le Frontend. Le Backend reçoit le document, valide son format et génère un identifiant unique.
+
+Les vérifications comprennent :
+
+* extension autorisée
+* type MIME attendu
+* taille maximale
+* présence du fichier
+* nom de fichier sain
+
+Le fichier est ensuite stocké dans le dossier d'upload.
+
+## 7.2 Validation
+
+Le système vérifie la cohérence des données du fichier et prépare son traitement. Cette étape permet d'éviter les erreurs techniques avant le lancement du traitement IA.
+
+## 7.3 Détection du média
+
+Le fichier est classé :
+
+* audio
+* vidéo
+* invalide
+
+Selon le cas, le pipeline poursuit ou affiche une erreur.
+
+## 7.4 Analyse qualité
+
+Le backend analyse les métadonnées du fichier pour récupérer :
+
+* durée
+* format
+* taille
+* sampling rate
+* canaux
+* qualité audio
+
+Cette information sert autant au contrôle du système qu'à l'affichage à l'utilisateur.
+
+## 7.5 Extraction audio
+
+Si le fichier est une vidéo, le son est extrait via FFmpeg pour pouvoir être traité par le modèle de transcription.
+
+La sortie correspond à une piste audio exploitable par le moteur de transcription.
+
+## 7.6 Transcription
+
+Le moteur Whisper (localement) transforme le flux audio en texte. Cette étape est centrale dans l'application.
+
+Le texte produit est ensuite structuré et stocké dans un format exploitable pour le résumé ou l'affichage.
+
+## 7.7 Résumé IA
+
+Selon la configuration, le backend peut générer un résumé à partir de la transcription. Cette étape peut être réalisée localement via Ollama ou un autre moteur compatible.
+
+## 7.8 Préparation des résultats
+
+Le système construit les résultats finaux sous forme de fichiers texte et de données structurées. Les sorties sont préparées pour le téléchargement et la consultation dans le Frontend.
+
+## 7.9 Téléchargement
+
+Le Frontend permet à l'utilisateur de récupérer :
+
+* le texte transcript
+* le résumé
+* le fichier JSON
+* éventuellement le PDF ou autres export possibles
+
+---
+
+# 8. Suivi de progression
+
+Le backend maintient un état de traitement pour chaque fichier.
+
+Les informations de progression comprennent :
+
+* étape actuelle
+* statut
+* pourcentage
+* message utilisateur
+* date de démarrage
+* date de mise à jour
+
+Le Frontend reçoit ensuite ces informations pour afficher une barre de progression et un état d'exécution.
+
+---
+
+# 9. Gestion d'erreurs
+
+Le workflow est conçu pour gérer les erreurs contrôlées.
+
+Les problèmes courants peuvent être :
+
+* fichier invalide
+* extension non supportée
+* fichier corrompu
+* FFmpeg indisponible
+* modèle IA indisponible
+* mémoire insuffisante
+* timeout de traitement
+
+Quand une erreur survient, le système met à jour l'état du traitement et renvoie un message explicite à l'interface.
+
+---
+
+# 10. Résultat final
+
+À la fin du traitement, l'utilisateur obtient une transcription exploitable et, selon la configuration, un résumé. Tous les éléments sont stockés dans les dossiers de sortie et peuvent être consultés depuis l'application.
+
+Le workflow global de TranscriBITE repose donc sur une chaîne claire :
+
+```text
+Fichier utilisateur
+→ validation
+→ détection du média
+→ analyse
+→ extraction audio
+→ transcription IA
+→ résumé IA
+→ résultats
+→ téléchargement
+```
+
+Cette organisation garantit un traitement local, modulé et facilement extensible.
+
+```text
+Upload
+
+↓
+
+Validation
+
+↓
+
 Initialisation du pipeline
 
 ↓

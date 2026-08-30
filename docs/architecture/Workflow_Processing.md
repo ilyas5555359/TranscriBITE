@@ -206,7 +206,6 @@ backend/app/enums/pipeline_order.py
 
 Il garantit que les étapes sont exécutées dans le bon ordre.
 
-
 L'ordre du pipeline sera utilisé par :
 
 * Process Service pour l'orchestration
@@ -217,6 +216,82 @@ L'ordre du pipeline sera utilisé par :
 ---
 
 # 5. Description des étapes
+
+## 5.1 Upload
+
+La première étape consiste à recevoir le fichier envoyé par l'utilisateur. L'application vérifie la présence du média, son nom, sa taille et son type. Une fois validé, le fichier est enregistré dans le dossier de stockage correspondant.
+
+## 5.2 Validation
+
+Cette étape sécurise le backend en vérifiant les types acceptés, la taille, les paramètres de configuration et l'intégrité du fichier téléchargé. Elle permet de ne pas lancer de traitement inutile sur un fichier invalide.
+
+## 5.3 Détection du type de média
+
+Le système détermine si le fichier est audio, vidéo ou incompatible. Cette étape conditionne le comportement du pipeline, notamment l'extraction d'audio pour les fichiers vidéo.
+
+## 5.4 Analyse de qualité audio
+
+L'analyse de qualité permet de mesurer les caractéristiques du média avant transcription. Elle aide à détecter d'éventuels soucis de qualité, de format ou de compatibilité avec les moteurs de traitement.
+
+## 5.5 Extraction audio
+
+Pour les vidéos, FFmpeg est utilisé pour produire une piste audio exploitable par le moteur de transcription. Cette étape est automatique et centralisée.
+
+## 5.6 Transcription
+
+La transcription convertit le signal audio en texte brut. Le moteur peut être configuré selon la langue, le modèle et le mode de calcul. Cette étape représente le cœur fonctionnel de l'application.
+
+## 5.7 Génération du résumé
+
+Selon l'état du projet et la configuration, la transcription peut être utilisée pour générer un résumé. Cela peut être réalisé avec un modèle local et permet de produire un format plus synthétique et plus exploitable.
+
+## 5.8 Préparation des résultats
+
+Le système regroupe les éléments obtenus, met en forme les résultats, et prépare les fichiers utilisables par le Frontend. Cette étape peut générer plusieurs sorties (TXT, JSON, PDF, etc.).
+
+## 5.9 Nettoyage
+
+La phase de nettoyage supprime les fichiers temporaires et les artefacts inutiles. Cela évite le remplissage du stockage et aide à maintenir la propreté du système.
+
+## 5.10 Terminé
+
+Quand toutes les étapes sont validées, l'état passe en `COMPLETED` afin que l'utilisateur puisse accéder à ses résultats. À ce stade, le traitement est terminé et les fichiers sont prêts à être téléchargés.
+
+---
+
+# 6. Intégration avec le Frontend
+
+Le Frontend suit le statut du pipeline en appelant régulièrement les routes de progression. Il affiche :
+
+* le nom du fichier
+* l'étape active
+* le pourcentage
+* le statut global
+* éventuellement des messages détaillés
+
+Cette communication garantit une expérience utilisateur cohérente et réactive.
+
+---
+
+# 7. Gestion des erreurs et reprise
+
+En cas d'échec, le pipeline ne doit pas laisser le système dans un état ambigu. L'API renvoie un message explicite et met à jour les états. Cela permet d'indiquer précisément quelle étape a échoué et ce qui doit être réparé.
+
+Les erreurs les plus fréquentes sont :
+
+* fichier absent ou corrompu
+* format non supporté
+* FFmpeg non disponible
+* modèle IA non chargé
+* problème de mémoire ou de ressources
+* timeout de transcription
+
+---
+
+# 8. Conclusion
+
+Le workflow de traitement de TranscriBITE est basé sur une architecture modulaire, des enums standardisés et un orchestrateur central. Cette structure rend le système lisible, extensible et stable, tout en assurant un suivi détaillé de chaque étape pour le Frontend et les utilisateurs.
+
 
 ## 5.1 Upload
 

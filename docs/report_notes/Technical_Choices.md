@@ -219,6 +219,53 @@ Centraliser la vérification de l'existence des fichiers dans `FileService` via 
 
 ### Justification
 
+Cette séparation évite de dupliquer la logique de validation et permet de maintenir un comportement homogène entre les différents services.
+
+---
+
+# Jour 10
+
+## Standardisation de la configuration
+
+### Choix
+
+Centraliser les variables de configuration du projet dans un fichier `.env` et un module de configuration dédié.
+
+### Justification
+
+Le Backend doit pouvoir démarrer de manière reproductible, avec des chemins, ports et dépendances identifiables et faciles à modifier.
+
+---
+
+## Validation environnementale préalable
+
+### Choix
+
+Ajouter un contrôle automatique de l'environnement avant traitement.
+
+### Justification
+
+Cela réduit les erreurs de démarrage, permet de détecter rapidement les dépendances manquantes et rend le projet plus fiable pour les utilisateurs et les tests.
+
+---
+
+## Organisation des espaces de stockage
+
+### Choix
+
+Séparer les dossiers d'upload, de sortie, de cache et de temp.
+
+### Justification
+
+La séparation évite les conflits entre fichiers sources, fichiers temporaires et résultats finalisés. Elle rend aussi les opérations de nettoyage plus sûres.
+
+---
+
+# Conclusion
+
+Les choix techniques retenus pour TranscriBITE répondent à une logique claire : modularité, performance locale, sécurité des données et facilité de maintenance. Chaque décision a été prise pour rendre le projet fiable, testable et extensible sans dépendre d'un service externe.
+
+
 La validation de l'existence d'un fichier relève de la responsabilité du module de gestion des fichiers et non du `QualityService`. Cette approche évite la duplication du code et permet à tous les services de réutiliser la même logique de validation.
 
 ---

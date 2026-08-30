@@ -220,6 +220,78 @@ Responsable de :
 * FFmpeg
 * progression
 * téléchargement
+* Frontend
+
+## Membre 2
+
+Responsable de :
+
+* transcription
+* Faster-Whisper
+* résumé IA
+* Ollama
+* résultats et intégration IA
+
+## Justification
+
+Cette séparation réduit les conflits de code et permet un développement parallèle plus fluide.
+
+---
+
+# 11. Utilisation d'Enum pour le pipeline
+
+## Décision
+
+Le système utilise des enums pour représenter les étapes du traitement et leurs statuts.
+
+## Justification
+
+Cette pratique évite les erreurs liées à des chaînes de caractères non standardisées et rend le pipeline plus lisible, plus robuste et plus facilement extensible.
+
+---
+
+# 12. Stockage des résultats dans des dossiers dédiés
+
+## Décision
+
+Les données sont séparées entre fichiers uploadés, fichiers temporaires et sorties finales.
+
+## Justification
+
+Cette organisation évite les collisions de fichiers, facilite le nettoyage et permet un meilleur suivi des traitements.
+
+---
+
+# 13. Préparation des téléchargements multipoints
+
+## Décision
+
+Le système est conçu pour permettre la génération de plusieurs documents de sortie (TXT, JSON, PDF éventuel).
+
+## Justification
+
+Un utilisateur a souvent besoin de plusieurs formats selon son usage, et cette préparation évite le refactoring lors de l'ajout de nouvelles exportations.
+
+---
+
+# 14. Priorité au fonctionnement local
+
+## Décision
+
+Privilégier l'exécution locale des modèles et outils de traitement.
+
+## Justification
+
+Cela protège la confidentialité des données, évite la dépendance à une connexion Internet et correspond au besoin principal du projet.
+
+---
+
+# 15. Conclusion
+
+Les décisions techniques retenues pour TranscriBITE sont cohérentes avec l'objectif principal du projet : fournir une application de transcription locale, fiable et extensible. La séparation des responsabilités, le choix des outils ouverts et l'architecture modulaire permettent au projet de rester maintenable malgré sa complexité technique.
+
+* progression
+* téléchargement
 * frontend
 
 ## Membre 2
