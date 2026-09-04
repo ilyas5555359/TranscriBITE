@@ -23,6 +23,14 @@ def test_build_prompt_in_english():
     assert "Hello" in prompt
 
 
+def test_build_prompt_in_arabic():
+    prompt = SummaryService._build_prompt("مرحبا بكم", "ar")
+
+    assert "باللغة العربية" in prompt
+    assert "20 كلمة" in prompt
+    assert "مرحبا بكم" in prompt
+
+
 def test_empty_text_is_rejected():
     with pytest.raises(ValueError):
         asyncio.run(SummaryService().generate_summary("  "))

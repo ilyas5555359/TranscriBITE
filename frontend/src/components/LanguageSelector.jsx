@@ -12,6 +12,7 @@ function LanguageSelector({ value = 'auto', onChange }) {
         <option value="auto">Détection automatique</option>
         <option value="fr">Français</option>
         <option value="en">English</option>
+        <option value="ar">العربية</option>
       </select>
     </div>
   )

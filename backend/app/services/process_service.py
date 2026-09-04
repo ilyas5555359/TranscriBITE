@@ -26,6 +26,7 @@ class ProcessService:
         self.progress_service = ProgressService()
         self._temporary_audio: dict[UUID, Path] = {}
         self._languages: dict[UUID, str] = {}
+        self._summary_lengths: dict[UUID, str] = {}
 
     async def start_process(
         self,
@@ -53,13 +54,17 @@ class ProcessService:
         self,
         file_id: UUID,
         language: str = "auto",
+        summary_length: str = "normal",
     ) -> tuple[ProcessingStatus, list[PipelineStep]]:
         """Initialise un traitement et construit son pipeline."""
 
         processing = await self._initialize_processing(file_id)
-        if language not in {"auto", "fr", "en"}:
+        if language not in {"auto", "fr", "en", "ar"}:
             raise ValueError("Langue non supportée.")
+        if summary_length not in {"short", "normal", "long"}:
+            raise ValueError("Longueur de résumé non supportée.")
         self._languages[file_id] = language
+        self._summary_lengths[file_id] = summary_length
         processing.original_filename = (await self._validate_file(file_id)).name
         await self.progress_service.processing_state.add_processing(
             file_id,
@@ -287,6 +292,7 @@ class ProcessService:
                     processing.summary_result = await summary_service.generate_summary(
                         text=transcription.get("text", ""),
                         language=transcription.get("language", "fr"),
+                        summary_length=self._summary_lengths.get(file_id, "normal"),
                     )
 
                 elif step == PipelineStep.RESULT_PREPARATION:

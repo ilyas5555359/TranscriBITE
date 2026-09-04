@@ -11,14 +11,11 @@ vi.mock('../services/api', () => ({
 afterEach(() => cleanup())
 
 describe('processing components', () => {
-  it('disables downloads when no file is selected', () => {
+  it('disables the PDF export when no file is selected', () => {
     render(<DownloadButtons />)
 
     expect(screen.getByRole('button', {
-      name: 'Télécharger la transcription (TXT)',
-    })).toBeDisabled()
-    expect(screen.getByRole('button', {
-      name: 'Télécharger les données (JSON)',
+      name: 'Télécharger le rapport (PDF)',
     })).toBeDisabled()
   })
 

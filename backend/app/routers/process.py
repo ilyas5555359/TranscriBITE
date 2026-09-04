@@ -23,12 +23,14 @@ async def start_process(
     file_id: UUID,
     background_tasks: BackgroundTasks,
     language: str = "auto",
+    summary_length: str = "normal",
 ) -> ProcessResponse:
 
     try:
         processing, pipeline = await process_service.prepare_process(
             file_id,
             language,
+            summary_length,
         )
         background_tasks.add_task(
             process_service.execute_background,

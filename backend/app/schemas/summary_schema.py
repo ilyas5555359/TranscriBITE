@@ -1,5 +1,7 @@
 """Schemas de l'API de résumé."""
 
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 
@@ -21,6 +23,11 @@ class SummaryRequest(BaseModel):
     language: str = Field(
         default="fr",
         description="Langue du texte"
+    )
+
+    summary_length: Literal["short", "normal", "long"] = Field(
+        default="normal",
+        description="Longueur souhaitée du résumé",
     )
 
 

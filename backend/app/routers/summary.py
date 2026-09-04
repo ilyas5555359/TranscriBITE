@@ -21,6 +21,36 @@ router = APIRouter(
 
 
 @router.post(
+    "/live",
+    response_model=SummaryResponse,
+)
+async def generate_live_summary(
+    request: SummaryRequest,
+) -> SummaryResponse:
+    """Générer un résumé pour une transcription capturée en direct."""
+
+    try:
+        result = await summary_service.generate_summary(
+            text=request.text,
+            language=request.language,
+            summary_length=request.summary_length,
+        )
+
+        return SummaryResponse(
+            success=True,
+            message="Résumé live généré avec succès",
+            data=SummaryData(**result),
+            job_id=request.job_id,
+        )
+
+    except SummaryError as error:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=str(error),
+        ) from error
+
+
+@router.post(
     "",
     response_model=SummaryResponse,
 )
@@ -40,6 +70,7 @@ async def generate_summary(
         result = await summary_service.generate_summary(
             text=request.text,
             language=request.language,
+            summary_length=request.summary_length,
         )
 
         return SummaryResponse(

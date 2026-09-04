@@ -60,6 +60,7 @@ describe('Home workflow', () => {
       'job-123',
       'Bonjour TranscriBITE',
       'fr',
+      'normal',
     )
   })
 

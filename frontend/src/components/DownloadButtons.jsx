@@ -2,60 +2,36 @@ import { useState } from 'react'
 import { downloadResult } from '../services/api'
 
 function DownloadButtons({ fileId = '', onError }) {
-  const [downloadingFormat, setDownloadingFormat] = useState('')
+  const [downloading, setDownloading] = useState(false)
 
-  const handleDownload = async (format) => {
-    if (!fileId || downloadingFormat) {
+  const handleDownload = async () => {
+    if (!fileId || downloading) {
       return
     }
 
-    setDownloadingFormat(format)
+    setDownloading(true)
 
     try {
-      await downloadResult(fileId, format)
+      await downloadResult(fileId, 'pdf')
     } catch (error) {
       onError?.(error.message || 'Le téléchargement a échoué.')
     } finally {
-      setDownloadingFormat('')
+      setDownloading(false)
     }
   }
 
   return (
     <section className="download-buttons">
-      <h2>Télécharger</h2>
+      <h2>Exporter</h2>
 
       <div className="download-buttons__actions">
         <button
           type="button"
           className="button button--secondary"
-          disabled={!fileId || Boolean(downloadingFormat)}
-          onClick={() => handleDownload('txt')}
+          disabled={!fileId || downloading}
+          onClick={handleDownload}
         >
-          {downloadingFormat === 'txt'
-            ? 'Téléchargement…'
-            : 'Télécharger la transcription (TXT)'}
-        </button>
-
-        <button
-          type="button"
-          className="button button--secondary"
-          disabled={!fileId || Boolean(downloadingFormat)}
-          onClick={() => handleDownload('json')}
-        >
-          {downloadingFormat === 'json'
-            ? 'Téléchargement…'
-            : 'Télécharger les données (JSON)'}
-        </button>
-
-        <button
-          type="button"
-          className="button button--secondary"
-          disabled={!fileId || Boolean(downloadingFormat)}
-          onClick={() => handleDownload('pdf')}
-        >
-          {downloadingFormat === 'pdf'
-            ? 'Téléchargement…'
-            : 'Télécharger le rapport (PDF)'}
+          {downloading ? 'Génération…' : 'Télécharger le rapport (PDF)'}
         </button>
       </div>
     </section>

@@ -51,6 +51,32 @@
   margin-top: 0;
 }
 
+.mode-switcher {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+  padding: 4px;
+  border-radius: var(--radius-small);
+  background: var(--color-surface);
+}
+
+.mode-switcher__button {
+  flex: 1;
+  border: 1px solid transparent;
+  border-radius: var(--radius-small);
+  padding: 10px 12px;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+
+.mode-switcher__button--active {
+  border-color: var(--color-border);
+  background: var(--color-background);
+  color: var(--color-primary-dark);
+  box-shadow: var(--shadow-small);
+}
+
 .workspace-left p,
 .workspace-right p {
   color: var(--color-text-muted);
@@ -83,6 +109,115 @@
 
 .language-selector select:focus {
   border-color: var(--color-primary);
+}
+
+.summary-length-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.summary-length-selector label {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.summary-length-selector select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background: var(--color-background);
+  color: var(--color-text);
+  outline: none;
+}
+
+.summary-length-selector select:focus {
+  border-color: var(--color-primary);
+}
+
+
+
+.live-transcription {
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+}
+
+.live-transcription__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.live-transcription__header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.live-transcription__header p {
+  margin: 6px 0 0;
+  font-size: 0.9rem;
+}
+
+.live-transcription__status {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.live-transcription__status--active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.live-transcription__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.live-transcription__actions .button {
+  padding: 9px 12px;
+  font-size: 0.9rem;
+}
+
+.live-transcription__content {
+  min-height: 110px;
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background: var(--color-background);
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.live-transcription__current-word {
+  padding: 2px 4px;
+  border-radius: 4px;
+  background: #fef08a;
+  color: inherit;
+}
+
+.live-transcription__empty,
+.live-transcription__notice {
+  color: var(--color-text-muted);
+}
+
+.live-transcription__error {
+  margin: 12px 0 0;
+  color: var(--color-error) !important;
+  font-size: 0.9rem;
 }
 
 
@@ -182,6 +317,55 @@
   margin: 0;
   color: var(--color-text-muted);
   overflow-wrap: anywhere;
+}
+
+
+
+.media-preview {
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+}
+
+.media-preview__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.media-preview__header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.media-preview__header p {
+  margin: 6px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.media-preview__type {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: var(--color-background);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.media-preview__player {
+  display: block;
+  width: 100%;
+}
+
+.media-preview video {
+  max-height: 240px;
+  border-radius: var(--radius-small);
+  background: #111827;
 }
 
 
@@ -307,6 +491,14 @@
 
 .transcript-viewer__empty {
   color: var(--color-text-muted);
+}
+
+.transcript-viewer__current-word {
+  padding: 2px 4px;
+  border-radius: 4px;
+  background: #fef08a;
+  color: inherit;
+  box-shadow: 0 0 0 2px rgba(234, 179, 8, 0.18);
 }
 
 

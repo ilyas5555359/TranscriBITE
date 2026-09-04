@@ -32,9 +32,9 @@ export async function uploadFile(file) {
  * @param {string} fileId - UUID du fichier
  * @returns {Promise<object>}
  */
-export async function startProcess(fileId, language = 'auto') {
+export async function startProcess(fileId, language = 'auto', summaryLength = 'normal') {
   const response = await fetch(
-    `${API_BASE}/process/start?file_id=${fileId}&language=${language}`,
+    `${API_BASE}/process/start?file_id=${fileId}&language=${language}&summary_length=${summaryLength}`,
     { method: 'POST' },
   )
 
@@ -69,7 +69,7 @@ export async function getProgress(fileId) {
  * @param {string} language - Code langue (fr, en, auto)
  * @returns {Promise<object>}
  */
-export async function generateSummary(jobId, text, language = 'fr') {
+export async function generateSummary(jobId, text, language = 'fr', summaryLength = 'normal') {
   const response = await fetch(`${API_BASE}/summary`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -77,12 +77,39 @@ export async function generateSummary(jobId, text, language = 'fr') {
       job_id: jobId,
       text,
       language,
+      summary_length: summaryLength,
     }),
   })
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}))
     throw new Error(error.detail || `Erreur summary (${response.status})`)
+  }
+
+  return response.json()
+}
+
+/**
+ * Générer un résumé pour une transcription capturée par le microphone.
+ * @param {string} text - Texte transcrit en direct
+ * @param {string} language - Code langue
+ * @returns {Promise<object>}
+ */
+export async function generateLiveSummary(text, language = 'fr', summaryLength = 'normal') {
+  const response = await fetch(`${API_BASE}/summary/live`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      job_id: `live-${Date.now()}`,
+      text,
+      language,
+      summary_length: summaryLength,
+    }),
+  })
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}))
+    throw new Error(error.detail || `Erreur summary live (${response.status})`)
   }
 
   return response.json()
