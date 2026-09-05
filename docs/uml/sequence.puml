@@ -3,52 +3,69 @@ title Diagramme de séquence - Traitement d'un fichier TranscriBITE
 
 actor "Utilisateur" as User
 participant "Frontend React" as Frontend
-participant "FastAPI" as API
 participant "Upload Router" as Upload
 participant "File Service" as FileService
+participant "Process Router" as ProcessRouter
 participant "Process Service" as Process
+participant "Progress Router" as ProgressRouter
+participant "Progress Service" as Progress
 participant "Quality Service" as Quality
 participant "Audio Service" as Audio
 participant "Transcription Service" as Transcription
 participant "Summary Service" as Summary
+participant "Download Router" as DownloadRouter
 participant "Download Service" as Download
+participant "Web Speech API" as SpeechAPI
 
 User -> Frontend : Sélectionner un fichier
-Frontend -> API : POST /upload
-API -> Upload : Traiter la requête
-Upload -> FileService : Valider et sauvegarder le fichier
-FileService --> Upload : Métadonnées du fichier
-Upload --> API : Réponse d'upload
-API --> Frontend : Informations du fichier
+Frontend -> Upload : POST /upload/
+Upload -> FileService : Valider et sauvegarder
+FileService --> Upload : file_id et métadonnées
+Upload --> Frontend : UploadResponse
 
 User -> Frontend : Lancer le traitement
-Frontend -> API : POST /process
-API -> Process : Démarrer le pipeline
+Frontend -> ProcessRouter : POST /process/start?file_id&language&summary_length
+ProcessRouter -> Process : prepare_process(...)
+Process -> Progress : Initialiser et persister l'état
+ProcessRouter --> Frontend : ProcessResponse (traitement démarré)
 
-Process -> Quality : Analyser la qualité audio
-Quality --> Process : Résultat de l'analyse
+ProcessRouter -> Process : BackgroundTasks.execute_background()
+Process -> Quality : Analyser avec FFprobe
+Quality --> Process : quality_result
 
 alt Fichier vidéo
-    Process -> Audio : Extraire l'audio avec FFmpeg
-    Audio --> Process : Audio extrait
+    Process -> Audio : Extraire avec FFmpeg
+    Audio --> Process : WAV dans storage/outputs
 end
 
-Process -> Transcription : Transcrire le fichier
-Transcription --> Process : Résultat de transcription
+Process -> Transcription : Transcrire avec Faster-Whisper
+Transcription --> Process : transcription_result
+Process -> Summary : Générer avec Ollama
+Summary --> Process : summary_result
+Process -> Progress : Mettre à jour les étapes et le pourcentage
 
-opt Génération du résumé activée
-    Process -> Summary : Générer le résumé
-    Summary --> Process : Résumé
+loop Toutes les 250 ms jusqu'à la fin
+    Frontend -> ProgressRouter : GET /progress/{file_id}
+    ProgressRouter -> Progress : Lire l'état persistant
+    Progress --> ProgressRouter : ProgressResponse
+    ProgressRouter --> Frontend : statut et progression
 end
-
-Process --> API : Traitement terminé
-API --> Frontend : Résultats disponibles
 
 User -> Frontend : Télécharger le résultat
-Frontend -> API : GET /download
-API -> Download : Préparer le téléchargement
-Download --> API : Fichier de résultat
-API --> Frontend : Fichier à télécharger
+Frontend -> DownloadRouter : GET /download/{file_id}/{format}
+DownloadRouter -> Download : Préparer TXT, JSON ou PDF
+Download --> DownloadRouter : chemin du fichier
+DownloadRouter --> Frontend : FileResponse
 Frontend --> User : Résultat téléchargé
 
+== Mode transcription live ==
+
+User -> Frontend : Activer le mode live
+Frontend -> SpeechAPI : Démarrer la reconnaissance vocale
+SpeechAPI --> Frontend : Résultats intermédiaires et finaux
+Frontend -> Frontend : Afficher la transcription en direct
+User -> Frontend : Demander un résumé live
+Frontend -> Summary : POST /summary/live
+Summary --> Frontend : SummaryResponse via Ollama
+Frontend --> User : Afficher le résumé live
 @enduml

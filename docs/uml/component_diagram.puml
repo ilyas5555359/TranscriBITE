@@ -1,11 +1,12 @@
 @startuml
 title Diagramme de composants - TranscriBITE
-
 skinparam componentStyle rectangle
 
-package "Frontend" {
-    [React UI] as React
+package "Frontend React" {
+    [Interface fichier] as FileUI
+    [Transcription live] as LiveUI
     [API Client] as ApiClient
+    [Web Speech API] as SpeechAPI
 }
 
 package "Backend FastAPI" {
@@ -14,6 +15,9 @@ package "Backend FastAPI" {
     [Progress Router] as ProgressRouter
     [Download Router] as DownloadRouter
     [Health Router] as HealthRouter
+    [Transcription Router] as TranscriptionRouter
+    [Extract Router] as ExtractRouter
+    [Summary Router] as SummaryRouter
 
     [File Service] as FileService
     [Process Service] as ProcessService
@@ -24,56 +28,66 @@ package "Backend FastAPI" {
     [Summary Service] as SummaryService
     [Download Service] as DownloadService
     [Health Service] as HealthService
+    [Processing State] as ProcessingState
+    [Whisper Model Manager] as WhisperManager
 }
 
 package "Outils locaux" {
-    [FFmpeg] as FFmpeg
+    [FFmpeg / FFprobe] as MediaTools
     [Faster-Whisper] as Whisper
     [Ollama] as Ollama
 }
 
 package "Stockage local" {
     folder "storage/uploads" as UploadStorage
-    folder "storage/temp" as TempStorage
     folder "storage/outputs" as OutputStorage
     folder "storage/cache" as CacheStorage
+    folder "logs" as LogStorage
 }
 
-React --> ApiClient
+FileUI --> ApiClient
+LiveUI --> SpeechAPI
+LiveUI --> ApiClient
 
 ApiClient --> UploadRouter
 ApiClient --> ProcessRouter
 ApiClient --> ProgressRouter
 ApiClient --> DownloadRouter
 ApiClient --> HealthRouter
+ApiClient --> TranscriptionRouter
+ApiClient --> ExtractRouter
+ApiClient --> SummaryRouter
 
 UploadRouter --> FileService
 ProcessRouter --> ProcessService
 ProgressRouter --> ProgressService
 DownloadRouter --> DownloadService
 HealthRouter --> HealthService
+TranscriptionRouter --> TranscriptionService
+ExtractRouter --> AudioService
+SummaryRouter --> SummaryService
 
 ProcessService --> QualityService
 ProcessService --> AudioService
 ProcessService --> TranscriptionService
 ProcessService --> SummaryService
 ProcessService --> ProgressService
+ProcessService --> ProcessingState
 
 FileService --> UploadStorage
-
-QualityService --> UploadStorage
-
-AudioService --> FFmpeg
-AudioService --> TempStorage
-
+QualityService --> MediaTools
+AudioService --> MediaTools
+AudioService --> OutputStorage : WAV extrait
+TranscriptionService --> WhisperManager
 TranscriptionService --> Whisper
-TranscriptionService --> TempStorage
-
+TranscriptionService --> UploadStorage
+TranscriptionService --> OutputStorage
 SummaryService --> Ollama
-
+DownloadService --> ProcessingState
 DownloadService --> OutputStorage
-DownloadService --> CacheStorage
-
-ProcessService --> OutputStorage
+HealthService --> Ollama
+HealthService --> WhisperManager
+ProcessingState --> CacheStorage
+ProcessService --> LogStorage
 
 @enduml

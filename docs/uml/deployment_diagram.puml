@@ -1,44 +1,45 @@
 @startuml
 title Diagramme de déploiement - TranscriBITE
 
-node "Machine utilisateur\nWindows 10 / Windows 11" as PC {
-
+node "Machine utilisateur" as PC {
     node "Navigateur Web" as Browser {
-        artifact "Frontend React" as Frontend
+        artifact "Frontend React / Vite" as Frontend
+        artifact "Web Speech API" as SpeechAPI
     }
 
-    node "Environnement Python" as Python {
-        artifact "FastAPI Backend" as Backend
+    node "Serveur local Python" as Python {
+        artifact "FastAPI + Uvicorn" as Backend
         artifact "Faster-Whisper" as Whisper
-        artifact "Ollama" as Ollama
-        artifact "FFmpeg" as FFmpeg
+        artifact "FFmpeg / FFprobe" as MediaTools
+    }
+
+    node "Service Ollama local" as OllamaNode {
+        artifact "Modèle gemma2:2b" as OllamaModel
     }
 
     node "Système de fichiers local" as Storage {
-        artifact "uploads/" as Uploads
-        artifact "temp/" as Temp
-        artifact "outputs/" as Outputs
-        artifact "cache/" as Cache
+        artifact "storage/uploads/" as Uploads
+        artifact "storage/outputs/" as Outputs
+        artifact "storage/cache/processing_states.json" as Cache
         artifact "logs/" as Logs
     }
 }
 
-Browser --> Backend : HTTP
-Backend --> FFmpeg : Traitement média
-Backend --> Whisper : Transcription
-Backend --> Ollama : Résumé optionnel
-
-Backend --> Uploads : Lecture / écriture
-Backend --> Temp : Fichiers temporaires
-Backend --> Outputs : Résultats
-Backend --> Cache : Données temporaires
-Backend --> Logs : Journalisation
+Browser --> Backend : HTTP REST
+Browser --> SpeechAPI : microphone / transcription live
+Backend --> MediaTools : analyse et extraction média
+Backend --> Whisper : transcription fichier
+Backend --> OllamaModel : résumé via HTTP localhost:11434
+Backend --> Uploads : lecture / écriture
+Backend --> Outputs : WAV et résultats TXT/JSON/PDF
+Backend --> Cache : état et progression
+Backend --> Logs : journalisation
 
 note right of PC
-    Fonctionnement local et offline
-
-    Aucun service cloud requis
-    pour le traitement des fichiers.
+    Traitement des fichiers local.
+    Aucun service cloud requis pour
+    l'upload, la transcription fichier
+    et le résumé.
+    Le mode live dépend du navigateur.
 end note
-
 @enduml

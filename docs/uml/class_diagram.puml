@@ -1,32 +1,50 @@
 @startuml
 title Diagramme de classes - TranscriBITE
 
-class FileMetadata {
-    +file_id: UUID
-    +original_name: str
-    +stored_name: str
-    +file_path: str
-    +extension: str
-    +mime_type: str
-    +size: int
-    +media_type: str
+class ProcessingState <<repository>> {
+    -_state_file: Path
+    -_processing_states: dict[UUID, ProcessingStatus]
+    +add_processing(file_id, processing)
+    +get_processing(file_id)
+    +exists(file_id)
+    +remove_processing(file_id)
 }
 
-class ProcessingState {
-    +file_id: UUID
+class ProcessingStatus <<schema>> {
+    +file_id: str
+    +original_filename: str?
     +current_step: PipelineStep
-    +status: StepStatus
+    +current_status: StepStatus
     +progress_percentage: float
-    +message: str
-    +started_at: datetime
-    +finished_at: datetime
+    +steps: list[ProcessingStep]
+    +started_at: datetime?
+    +finished_at: datetime?
+    +transcription_result: dict?
+    +quality_result: dict?
+    +summary_result: dict?
 }
 
-class TranscriptionResult {
-    +file_id: UUID
-    +language: str
+class ProcessingStep <<schema>> {
+    +step: PipelineStep
+    +status: StepStatus
+    +message: str?
+    +started_at: datetime?
+    +finished_at: datetime?
+}
+
+class TranscriptionData <<schema>> {
     +text: str
-    +segments: list
+    +language: str
+    +segments: list[dict]
+}
+
+class SummaryData <<schema>> {
+    +summary: str
+    +model: str
+}
+
+class PipelineOrder <<constant>> {
+    PIPELINE_ORDER: list[PipelineStep]
 }
 
 enum PipelineStep {
@@ -50,18 +68,16 @@ enum StepStatus {
     FAILED
 }
 
-class PipelineOrder {
-    +get_next_step()
-    +get_previous_step()
-    +get_step_order()
-}
+ProcessingState "1" o-- "0..*" ProcessingStatus : persiste
+ProcessingStatus "1" *-- "1..*" ProcessingStep : contient
+ProcessingStatus --> PipelineStep : étape courante
+ProcessingStatus --> StepStatus : statut courant
+ProcessingStatus ..> TranscriptionData : transcription_result
+ProcessingStatus ..> SummaryData : summary_result
+PipelineOrder ..> PipelineStep : ordonne
 
-FileMetadata "1" --> "1" ProcessingState : état du traitement
-ProcessingState --> PipelineStep : étape actuelle
-ProcessingState --> StepStatus : statut
-
-FileMetadata "1" --> "0..1" TranscriptionResult : résultat
-
-PipelineOrder --> PipelineStep : ordonne
-
+note right of ProcessingState
+  Stockage dans
+  storage/cache/processing_states.json
+end note
 @enduml
